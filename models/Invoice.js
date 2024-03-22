@@ -1,0 +1,47 @@
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/connection.js');
+
+class Invoice extends Model {}
+const Customer = require('./Customer');
+
+Invoice.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+            isDate: true
+        }
+    },
+    customer_id: {
+        type: DataTypes.INTEGER, 
+        references: Customer.id,
+        allowNull: false,
+    },
+    amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        validate: {
+            isDecimal: true
+        }
+    },
+    content: {
+        type: DataTypes.STRING, 
+    }
+  },
+  {
+    sequelize,
+    timestamps: false,
+    freezeTableName: true,
+    underscored: true,
+    modelName: 'invoice',
+  }
+);
+
+module.exports = Invoice;

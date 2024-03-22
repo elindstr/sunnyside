@@ -1,0 +1,50 @@
+<h1>Create New Customer</h1>
+
+<table>
+  <tr>
+    <td><span>First Name</span></td>
+    <td><input type="text" id="first_name"/></td>
+  </tr>
+  <tr>
+    <td><span>Last Name</span></td>
+    <td><input type="text" id="last_name"/></td>
+  </tr>
+  <tr>
+    <td><span>Address</span></td>
+    <td><input type="text" id="address"/></td>
+  </tr>
+  <tr>
+    <td><span>Phone</span></td>
+    <td><input type="text" id="phone"/></td>
+  </tr>
+  <tr>
+    <td><span>Email</span></td>
+    <td><input type="text" id="email"/></td>
+  </tr>
+  <tr>
+    <td><span>Product</span></td>
+    <td>
+      <select id="product">
+        <option value="">-</option>
+        {{#each products}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><span>Cleaner</span></td>
+    <td>
+      <select id="cleaner">
+        <option value="">-</option>
+        {{#each employees}}
+          <option value="{{this.id}}">{{this.first_name}}</option>
+        {{/each}}
+      </select>
+    </td>
+  </tr>
+</table>
+<button id="submit">Save</button>
+<a href="/admin/customers"><button id="cancel">Cancel</button></a>
+
+<script src="/js/admin-customers-create.js"></script>

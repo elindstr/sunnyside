@@ -1,0 +1,59 @@
+<h1>Edit Customer</h1>
+
+<table>
+  <tr>
+    <td><span>First Name</span></td>
+    <td><input type="text" id="first_name" value="{{customer.first_name}}"/></td>
+  </tr>
+  <tr>
+    <td><span>Last Name</span></td>
+    <td><input type="text" id="last_name" value="{{customer.last_name}}" /></td>
+  </tr>
+  <tr>
+    <td><span>Address</span></td>
+    <td><input type="text" id="address" value="{{customer.address}}" /></td>
+  </tr>
+  <tr>
+    <td><span>Phone</span></td>
+    <td><input type="text" id="phone" value="{{customer.phone}}" /></td>
+  </tr>
+  <tr>
+    <td><span>Email</span></td>
+    <td><input type="text" id="email" value="{{customer.email}}" /></td>
+  </tr>
+  <tr>
+    <td><span>Product</span></td>
+    <td>
+      <select id="product">
+        <option value="">-</option>
+        {{#each products}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><span>Cleaner</span></td>
+    <td>
+      <select id="cleaner">
+        <option value="">-</option>
+        {{#each employees}}
+          <option value="{{this.id}}">{{this.first_name}}</option>
+        {{/each}}
+      </select>
+    </td>
+  </tr>
+</table>
+<button id="update">Update</button>
+<button id="delete">Delete</button>
+<a href="/admin/customers"><button id="cancel">Cancel</button></a>
+
+<script src="/js/admin-customers-edit.js"></script>
+
+<script>
+  // load drop down selections
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('product').value = "{{customer.product.id}}";
+    document.getElementById('cleaner').value = "{{customer.employee.id}}";
+  })
+</script>
