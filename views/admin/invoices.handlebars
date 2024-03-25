@@ -1,0 +1,57 @@
+<h1>Manage Invoices</h1>
+<hr>
+
+<h2>Invoice Generator</h2>
+<span>Select Customer</span> <input type="text" id="customer_id"/><br>
+<span>Bill through:</span> <input type="date" id="end_date" value="{{today}}"/><br>
+<button onclick="generateInvoice()">Generate</button>
+<script src="/js/admin-invoices-generator.js"></script>
+
+<hr>
+<h2>{{customersCount}} accounts with uninvoiced services or expenses:</h2>
+<table>
+    <tr>
+        <th>customer id</th>
+        <th>name</th>
+        <th></th>
+    </tr>
+{{#each customers}}
+    <tr>
+        <td>{{this.id}}</td>
+        <td><a href="/admin/customers/view/{{this.id}}">{{this.first_name}} {{this.last_name}}</a></td>
+    </tr>
+{{/each}}
+</table>
+
+<br>
+<hr>
+List of Invoices:<br>
+<table>
+{{#each invoices}}
+    <tr>
+        <td>{{this.id}}</td>
+        <td>{{format_date this.date}}</td>
+        <td>{{this.customers.first_name}} {{this.customers.last_name}}</td>
+        <td><a href="/admin/invoices/view/{{this.id}}">view</a></td>
+    </tr>
+{{/each}}
+</table>
+
+
+<br>
+<hr>
+<pre>
+-manage invoicing/payments
+    -batch generate all monthly invoices (with auto email 
+    using nodemailer (new package)) --- (this method queries 
+    for each customer, pulls all uninvoiced services expenses, 
+    generates the body of an invoice as an html page, and then 
+    emails a notice to the customer. The html page is saved 
+    as a string in our database.)
+    -generate off-cycle individual invoice
+    -log payments
+</pre>
+
+
+
+

@@ -13,11 +13,25 @@ Invoice.init(
       autoIncrement: true
     },
     date: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        validate: {
-            isDate: true
-        }
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+          isDate: true
+      }
+    },
+    start_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+          isDate: true
+      }
+    },
+    end_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+          isDate: true
+      }
     },
     customer_id: {
         type: DataTypes.INTEGER, 
@@ -31,8 +45,16 @@ Invoice.init(
             isDecimal: true
         }
     },
+    amount_paid: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      validate: {
+          isDecimal: true
+      },
+      defaultValue: 0
+  },
     content: {
-        type: DataTypes.STRING, 
+        type: DataTypes.TEXT, 
     }
   },
   {

@@ -19,10 +19,9 @@
     </tr>
   </thead>
   <tbody>
-    <!-- data inserted here -->
     {{#each customers}}
     <tr>
-      <td>{{this.id}}</td>
+      <td><a href="/admin/customers/view/{{this.id}}">{{this.id}}</a></td>
       <td>{{this.first_name}}</td>
       <td>{{this.last_name}}</td>
       <td>{{this.address}}</td>

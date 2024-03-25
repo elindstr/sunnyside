@@ -44,16 +44,16 @@
     </td>
   </tr>
 </table>
-<button id="update">Update</button>
-<button id="delete">Delete</button>
+<button id="update" onclick="updateCustomer()">Update</button>
+<button id="delete" onclick="deleteCustomer()">Delete</button>
 <a href="/admin/customers"><button id="cancel">Cancel</button></a>
 
-<script src="/js/admin-customers-edit.js"></script>
+<script src="/js/admin-customers.js"></script>
 
 <script>
   // load drop down selections
   document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('product').value = "{{customer.product.id}}";
-    document.getElementById('cleaner').value = "{{customer.employee.id}}";
+    document.getElementById('product').value = "{{customer.product_id}}";
+    document.getElementById('cleaner').value = "{{customer.employee_id}}";
   })
 </script>

@@ -30,6 +30,10 @@ Employee.init(
     },
     available_days: {
         type: DataTypes.STRING, 
+    },
+    is_deleted: {
+      type: DataTypes.BOOLEAN, 
+      defaultValue: false
     }
   },
   {

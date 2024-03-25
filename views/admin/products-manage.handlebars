@@ -1,0 +1,27 @@
+
+<h1>Manage Products</h1>
+
+<a href="/admin/products/create"><button>+ Create New</button></a>
+
+<table id="products">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Rate</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- data inserted here -->
+    {{#each products}}
+    <tr>
+      <td>{{this.id}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.rate}}</td>
+      <td><a href="/admin/products/edit/{{this.id}}"><button>Edit</button></a></td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+</table>

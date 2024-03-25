@@ -1,5 +1,6 @@
 // import models
 // const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('./');
+const Batch = require('./Batch');
 const Customer = require('./Customer');
 const Employee = require('./Employee');
 const Expense = require('./Expense');
@@ -52,18 +53,21 @@ Expense.belongsTo(Employee, {
 });
 Employee.hasMany(Expense, {
     foreignKey: 'employee_id',
+    onDelete: 'SET NULL'
 });
 Expense.belongsTo(Customer, {
     foreignKey: 'customer_id'
 });
 Customer.hasMany(Expense, {
     foreignKey: 'customer_id',
+    onDelete: 'SET NULL'
 });
 Expense.belongsTo(Invoice, {
     foreignKey: 'invoice_id'
 });
 Invoice.hasMany(Expense, {
     foreignKey: 'invoice_id',
+    onDelete: 'SET NULL'
 });
 
 // Service foreign keys
@@ -72,18 +76,28 @@ Service.belongsTo(Employee, {
 });
 Employee.hasMany(Service, {
     foreignKey: 'employee_id',
+    onDelete: 'SET NULL'
 });
 Service.belongsTo(Customer, {
     foreignKey: 'customer_id'
 });
 Customer.hasMany(Service, {
     foreignKey: 'customer_id',
+    onDelete: 'SET NULL'
 });
 Service.belongsTo(Invoice, {
     foreignKey: 'invoice_id'
 });
 Invoice.hasMany(Service, {
     foreignKey: 'invoice_id',
+    onDelete: 'SET NULL'
+});
+Service.belongsTo(Product, {
+    foreignKey: 'product_id'
+});
+Product.hasMany(Service, {
+    foreignKey: 'product_id',
+    onDelete: 'SET NULL'
 });
 
 // User foreign keys
@@ -116,4 +130,4 @@ Employee.hasOne(User, {
     }
 });
 
-module.exports = { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User }
+module.exports = { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User }

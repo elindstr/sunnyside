@@ -4,6 +4,7 @@ const sequelize = require('../config/connection.js');
 class Service extends Model {}
 const Employee = require('./Employee');
 const Customer = require('./Customer');
+const Product = require('./Product');
 const Invoice = require('./Invoice');
 
 Service.init(
@@ -24,20 +25,22 @@ Service.init(
     employee_id: {
         type: DataTypes.INTEGER, 
         references: Employee.id,
-        allowNull: false,
     },
     customer_id: {
         type: DataTypes.INTEGER, 
         references: Customer.id,
-        allowNull: false,
     },
-    note: {
-        type: DataTypes.STRING, 
+    product_id: {
+      type: DataTypes.INTEGER, 
+      references: Product.id, 
     },
     invoice_id: {
         type: DataTypes.INTEGER, 
         references: Invoice.id,
-    }
+    },
+    note: {
+      type: DataTypes.STRING, 
+  },
   },
   {
     sequelize,

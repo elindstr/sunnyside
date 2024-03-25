@@ -24,20 +24,17 @@ Expense.init(
     employee_id: {
         type: DataTypes.INTEGER, 
         references: Employee.id,
-        allowNull: false,
     },
     customer_id: {
         type: DataTypes.INTEGER, 
         references: Customer.id,
-        allowNull: false,
     },
     amount: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
         validate: {
             isDecimal: true
-        },
-        allowNull: false,
+        }
     },
     description: {
         type: DataTypes.STRING, 

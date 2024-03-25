@@ -43,6 +43,18 @@ Customer.init(
     employee_id: {
         type: DataTypes.INTEGER, 
         references: Employee.id,
+    },
+    account_balance: { // for tracking payments that don't equal invoice amount 
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      validate: {
+          isDecimal: true
+      },
+      defaultValue: 0
+  },
+    is_deleted: {
+      type: DataTypes.BOOLEAN, 
+      defaultValue: false
     }
   },
   {

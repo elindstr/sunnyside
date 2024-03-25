@@ -1,0 +1,45 @@
+
+<h1>Customer Ledger</h1>
+
+<table id="customers">
+  <tr>
+    <th>ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Address</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Product</th>
+    <th>Schedule</th>
+    <th>Cleaner</th>
+  </tr>
+  <tr>
+    <td>{{customer.id}}</td>
+    <td>{{customer.first_name}}</td>
+    <td>{{customer.last_name}}</td>
+    <td>{{customer.address}}</td>
+    <td>{{customer.phone}}</td>
+    <td>{{customer.email}}</td>
+    <td>{{customer.product.name}}</td>
+    <td>{{customer.schedule}}</td>
+    <td>{{customer.employee.first_name}}</td>
+  </tr>
+</table>
+
+<hr>
+<table id="history">
+  <tr>
+    <th>Date</th>
+    <th>Type</th>
+    <th>Amount</th>
+    <th>Invoice ID</th>
+  </tr>
+  {{#each allRecords}}
+  <tr>
+    <td>{{format_date this.date}}</td>
+    <td>{{this.type}}</td>
+    <td>{{this.amount}}</td>
+    <td><a href="/admin/invoices/view/{{this.invoice_id}}">{{this.invoice_id}}</a></td>
+  </tr>
+  {{/each}}
+</table>

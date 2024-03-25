@@ -1,0 +1,25 @@
+<h1>Edit Employee</h1>
+
+<table>
+  <tr>
+    <td><span>First Name</span></td>
+    <td><input type="text" id="first_name" value="{{employee.first_name}}"/></td>
+  </tr>
+  <tr>
+    <td><span>Last Name</span></td>
+    <td><input type="text" id="last_name" value="{{employee.last_name}}" /></td>
+  </tr>
+  <tr>
+    <td><span>Email</span></td>
+    <td><input type="text" id="email" value="{{employee.email}}" /></td>
+  </tr>
+  <tr>
+    <td><span>Role</span></td>
+    <td><input type="text" id="role" value="{{employee.role}}" /></td>
+  </tr>
+</table>
+<button id="update" onclick="updateEmployee()">Update</button>
+<button id="delete" onclick="deleteEmployee()">Delete</button>
+<a href="/admin/employees"><button id="cancel">Cancel</button></a>
+
+<script src="/js/admin-employees.js"></script>

@@ -1,0 +1,17 @@
+<h1>Edit Product</h1>
+
+<table>
+  <tr>
+    <td><span>Name</span></td>
+    <td><input type="text" id="name" value="{{product.name}}"/></td>
+  </tr>
+  <tr>
+    <td><span>Rate</span></td>
+    <td><input type="text" id="rate" value="{{product.rate}}" /></td>
+  </tr>
+</table>
+<button id="update" onclick="updateProduct()">Update</button>
+<button id="delete" onclick="deleteProduct()">Delete</button>
+<a href="/admin/products"><button id="cancel">Cancel</button></a>
+
+<script src="/js/admin-products.js"></script>
