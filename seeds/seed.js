@@ -2,6 +2,7 @@ const sequelize = require('../config/connection');
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { format_date } = require('../utils/helpers');
 const { generate } = require('../utils/generate-invoice');
+const { Sequelize, Op } = require('sequelize');
 
 const seedDatabase = async () => {
     await sequelize.sync({ force: true });
@@ -21,8 +22,7 @@ const seedDatabase = async () => {
       });
     
     await seedInvoices()
-    //const invoice = await Invoice.bulkCreate(userInvoice);
-    //const payment = await Payment.bulkCreate(userPayment);
+    await seedPayments()
 
     process.exit(0)
 }
@@ -283,7 +283,7 @@ while (serviceDate < stopDate) {
 }
 
 async function seedInvoices() {
-    let invoice_start_date = new Date(2023, 0, 2);
+    let invoice_start_date = new Date(2023, 0, 1);
     let invoice_end_date = new Date(2023, 1, 2);
     let stopLoopDate = new Date(2024, 2, 1);
     while (invoice_end_date < stopLoopDate) {
@@ -298,6 +298,39 @@ async function seedInvoices() {
         invoice_end_date.setDate(invoice_end_date.getDate() + 30);
     }
 }
+
+async function seedPayments() {
+    let date = new Date(2023, 0, 20);
+    let stopLoopDate = new Date(2024, 2, 1);
+    while (date < stopLoopDate) {
+        for (let c = 1; c < 9; c++) {
+
+            // look up most recent invoice
+            invoiceData = await Invoice.findAll({
+                where: { 
+                    customer_id: c,
+                    date: {
+                        [Sequelize.Op.lte]: date
+                        }
+                },
+                order: [['date', 'DESC']]
+            })
+
+            // pay it
+            if (invoiceData.length) {
+                await Payment.create({ 
+                    customer_id: c, 
+                    amount: invoiceData[0].amount , 
+                    date, 
+                    invoice_id: invoiceData[0].id 
+                })
+            }
+
+        }
+        date.setDate(date.getDate() + 30);
+    }
+}
+
 
 seedDatabase()
 
