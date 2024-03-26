@@ -9,5 +9,7 @@ router.use('/', loginRoutes);
 const adminRoutes = require('./admin');
 router.use('/admin', adminRoutes);
 
+const customerSideRoutes = require('./customer');
+router.use('/customer', customerSideRoutes);
 
 module.exports = router;
