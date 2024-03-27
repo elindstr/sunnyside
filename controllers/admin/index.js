@@ -9,6 +9,9 @@ router.use('/employees', employeeRoutes);
 const invoiceRoutes = require('./invoiceRoutes');
 router.use('/invoices', invoiceRoutes);
 
+const paymentRoutes = require('./paymentRoutes');
+router.use('/payments', paymentRoutes);
+
 const productRoutes = require('./productRoutes');
 router.use('/products', productRoutes);
 

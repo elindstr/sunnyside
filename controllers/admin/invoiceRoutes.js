@@ -2,13 +2,24 @@ const router = require('express').Router();
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
 const { format_date, get_today } = require('../../utils/helpers');
-const {generate} = require('../../utils/generate-invoice.js');
+const {batchGenerate, generate} = require('../../utils/generate-invoice.js');
 const { Sequelize, Op } = require('sequelize');
 
 // invoice manager
 router.get('/', withAdminAuth, async (req, res) => {
   try {
     
+    // get date of last batch run
+    const lastBatchRunData = await Batch.findAll({
+      order: [['date', 'DESC']],
+      limit: 1,
+      raw: true
+    });
+    let lastBatchRun = ""
+    if (lastBatchRunData.length) {
+      lastBatchRun = format_date(lastBatchRunData[0].date)
+    }
+
     // get IDs of services with null invoice_id
     const uninvoicedServiceIDs = await Service.findAll({
       where: { invoice_id: null },
@@ -59,7 +70,7 @@ router.get('/', withAdminAuth, async (req, res) => {
     //render
     res.render('admin/invoices', {
       logged_in: req.session.logged_in,
-      customers, customersCount, invoices, today
+      customers, customersCount, invoices, today, lastBatchRun
     })
   } catch (err) {
     console.log(err)
@@ -139,7 +150,7 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
 });
 
 
-// for creating new individual invoice from the generator page (POST)
+// generate single invoice
 router.post('/generate', withAdminAuth, async (req, res) => {
   try {
     const {customer_id, date, start_date, end_date} = req.body
@@ -148,6 +159,22 @@ router.post('/generate', withAdminAuth, async (req, res) => {
       return res.status(400).json({ message: 'no data' });
     } 
     res.status(200).json({ message: 'Invoice generated successfully.' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// generate invoices for all accounts
+router.post('/generate-batch', withAdminAuth, async (req, res) => {
+  try {
+    const {date, start_date, end_date} = req.body
+    const msg = await batchGenerate(date, start_date, end_date);
+    if (msg == "none") {
+      return res.status(400).json({ message: 'no data' });
+    } 
+    res.status(200).json({ message: 'Invoices generated successfully.' });
 
   } catch (err) {
     console.error(err);
