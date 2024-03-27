@@ -1,0 +1,22 @@
+<h1>Record New Payment</h1>
+
+<table>
+<tr>
+    <td><span>Customer</span></td>
+    <td>
+      <select id="customer_id">
+        {{#each customers}}
+          <option value="{{this.id}}">{{this.last_name}}, {{this.first_name}}</option>
+        {{/each}}
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td><span>Amount</span></td>
+    <td><input type="text" id="amount"/></td>
+  </tr>
+</table>
+
+<button id="submit" onclick="savePayment()">Save</button>
+<a href="/admin/products"><button id="cancel">Cancel</button></a>
+<script src="/js/admin-payments.js"></script>
