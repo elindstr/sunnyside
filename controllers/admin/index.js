@@ -12,4 +12,7 @@ router.use('/invoices', invoiceRoutes);
 const productRoutes = require('./productRoutes');
 router.use('/products', productRoutes);
 
+const userRoutes = require('./userRoutes');
+router.use('/users', userRoutes);
+
 module.exports = router;

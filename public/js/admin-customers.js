@@ -7,6 +7,7 @@ const createCustomer = async (event) => {
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
         product_id: document.getElementById('product').value,
+        schedule: document.getElementById('schedule').value,
         employee_id: document.getElementById('cleaner').value
     }
 
@@ -57,6 +58,7 @@ const updateCustomer = async (event) => {
         phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
         product_id: document.getElementById('product').value,
+        schedule: document.getElementById('schedule').value,
         employee_id: document.getElementById('cleaner').value
     }
 
