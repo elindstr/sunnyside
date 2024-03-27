@@ -1,0 +1,30 @@
+
+<h1>Manage Users</h1>
+
+<a href="/admin/users/create"><button>+ Create New</button></a>
+
+<table id="users">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Type</th>
+      <th>Customer ID</th>
+      <th>Employee ID</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr>
+      <td>{{this.id}}</td>
+      <td>{{this.username}}</td>
+      <td>{{this.access_level}}</td>
+      <td>{{this.customer_id}}</td>
+      <td>{{this.employee_id}}</td>
+      <td><a href="/admin/users/edit/{{this.id}}"><button>Edit</button></a></td>
+    </tr>
+    {{/each}}
+
+  </tbody>
+</table>
