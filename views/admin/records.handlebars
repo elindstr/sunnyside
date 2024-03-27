@@ -1,0 +1,22 @@
+
+<h1>Records</h1>
+
+<table id="records">
+  <tr>
+    <th>Date</th>
+    <th>Customer ID</th>
+    <th>Type</th>
+    <th>Amount</th>
+    <th>Invoice ID</th>
+  </tr>
+
+  {{#each allRecords}}
+  <tr>
+    <td>{{format_date this.date}}</td>
+    <td>{{this.customer_id}}</td>
+    <td>{{this.type}}</td>
+    <td>{{this.amount}}</td>
+    <td><a href="/admin/invoices/view/{{this.invoice_id}}">{{this.invoice_id}}</a></td>
+  </tr>
+  {{/each}}
+</table>

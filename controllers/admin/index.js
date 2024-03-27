@@ -15,6 +15,9 @@ router.use('/payments', paymentRoutes);
 const productRoutes = require('./productRoutes');
 router.use('/products', productRoutes);
 
+const recordRoutes = require('./recordRoutes');
+router.use('/records', recordRoutes);
+
 const userRoutes = require('./userRoutes');
 router.use('/users', userRoutes);
 
