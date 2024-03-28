@@ -8,7 +8,7 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
   
       // get general customer data
       const customer = req.session.customer_id
-  
+
       // get customer record history
       let services = await Service.findAll({
         where: { customer_id: customer },
@@ -17,6 +17,7 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
         }],
         raw: true
       });
+
       //convert product.rate to "amount" for flattening into other objects
       services = services.map(service => ({
         ...service,
@@ -39,6 +40,7 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
         where: { customer_id: customer },
         raw: true
       });
+
       // combine records
       let allRecords = [];
       const addType = (array, type) => array.map(item => ({ ...item, type }));
@@ -49,16 +51,27 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
         addType(payments, 'Payment')
       );
       allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
+
       //render
-      res.render('admin/customers-view', {
+      res.render('customer/invoices', {
         logged_in: req.session.logged_in,
-        customer, allRecords
+        allRecords,
+        customer
       })
     } catch (err) {
       console.log(err)
       res.status(500).json({message: err});
     }
+});
+
+router.get('/view/:id', withCustomerAuth, async (req, res) => {
+  try {
+    const invoiceData = await Invoice.findByPk(req.params.id)
+    res.send(invoiceData.content)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
 });
 
 module.exports = router;
