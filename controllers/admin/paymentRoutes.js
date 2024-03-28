@@ -29,7 +29,7 @@ router.post('/create', withAdminAuth, async (req, res) => {
     let paymentAmountRemaining = req.body.amount
     while (!allPaid && paymentAmountRemaining > 0 ) {
 
-      //find oldest unpaid invoice; 
+      // find oldest unpaid invoice; 
       let oldestUnpaidInvoice = await Invoice.findAll({
         where: {
             amount: {

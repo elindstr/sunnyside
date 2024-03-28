@@ -324,6 +324,12 @@ async function seedPayments() {
                     date, 
                     invoice_id: invoiceData[0].id 
                 })
+                await Invoice.update({
+                    amount_paid: invoiceData[0].amount
+                },
+                {
+                    where: { id: invoiceData[0].id }
+                });
             }
 
         }

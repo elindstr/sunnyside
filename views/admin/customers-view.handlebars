@@ -9,6 +9,7 @@
     <th>Address</th>
     <th>Phone</th>
     <th>Email</th>
+    <th>Username</th>
     <th>Product</th>
     <th>Schedule</th>
     <th>Cleaner</th>
@@ -20,11 +21,22 @@
     <td>{{customer.address}}</td>
     <td>{{customer.phone}}</td>
     <td>{{customer.email}}</td>
+    <td>{{customer.username}}</td>
     <td>{{customer.product.name}}</td>
     <td>{{customer.schedule}}</td>
     <td>{{customer.employee.first_name}}</td>
   </tr>
 </table>
+
+<hr>
+
+Accounting:<br>
+-credit balance (overpayments): {{customer.account_balance}}<br>
+-amount of unpaid invoices: {{unpaidInvoiceBalance}}<br>
+-amount of unbilled services and expenses: {{unbilledTotal}} 
+
+{{this.amount}}
+<a href="/admin/invoices/view/{{this.invoice_id}}">{{this.invoice_id}}</a>
 
 <hr>
 <table id="history">
