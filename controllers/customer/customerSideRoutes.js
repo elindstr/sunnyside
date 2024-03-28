@@ -7,27 +7,8 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
     try {
   
       // get general customer data
-      const customer = req.session.customer_id
+      const customer = req.session.customer_id;
 
-      // get customer record history
-      let services = await Service.findAll({
-        where: { customer_id: customer },
-        include: [{
-          model: Product      
-        }],
-        raw: true
-      });
-
-      //convert product.rate to "amount" for flattening into other objects
-      services = services.map(service => ({
-        ...service,
-        amount: service['product.rate'],
-        type: 'Service'
-      }));
-      const expenses = await Expense.findAll({
-        where: { customer_id: customer },
-        raw: true
-      });
       const invoices = await Invoice.findAll({
         where: { customer_id: customer },
         attributes: {
@@ -36,19 +17,12 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
         },
         raw: true
       });
-      const payments = await Payment.findAll({
-        where: { customer_id: customer },
-        raw: true
-      });
 
       // combine records
       let allRecords = [];
       const addType = (array, type) => array.map(item => ({ ...item, type }));
       allRecords = allRecords.concat(
-        addType(services, 'Service'),
-        addType(expenses, 'Expense'),
         addType(invoices, 'Invoice'),
-        addType(payments, 'Payment')
       );
       allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
 
