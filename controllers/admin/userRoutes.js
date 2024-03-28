@@ -10,6 +10,20 @@ router.get('/', withAdminAuth, async (req, res) => {
     const users = await User.findAll({
       raw: true
     });
+    for (user of users) {
+      if (user.access_level == 'customer') {
+        const customer = await Customer.findByPk(user.customer_id)
+        user.name = `${customer.first_name} ${customer.last_name}`
+        user.email = customer.email
+      }
+      else {
+        const employee = await Employee.findByPk(user.employee_id)
+        user.name = `${employee.first_name} ${employee.last_name}`
+        user.email = employee.email
+      }
+    }
+    console.log(users)
+
     res.render('admin/users-manage', {
       logged_in: req.session.logged_in,
       users
@@ -203,5 +217,6 @@ router.put('/password/:id', withAdminAuth, async (req, res) => {
     res.status(500).json({message: err});
   }
 })
+
 
 module.exports = router;

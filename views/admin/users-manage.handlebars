@@ -11,6 +11,8 @@
       <th>Type</th>
       <th>Customer ID</th>
       <th>Employee ID</th>
+      <th>Name</th>
+      <th>Email</th>
       <th></th>
     </tr>
   </thead>
@@ -22,9 +24,14 @@
       <td>{{this.access_level}}</td>
       <td>{{this.customer_id}}</td>
       <td>{{this.employee_id}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.email}}</td>
       <td><a href="/admin/users/edit/{{this.id}}"><button>Edit</button></a></td>
+      <td><button onclick="emailCredentials({{this.id}})">Password reset</button></a></td>
     </tr>
     {{/each}}
 
   </tbody>
 </table>
+
+<script src="/js/admin-users.js"></script>

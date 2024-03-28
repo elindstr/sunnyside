@@ -109,7 +109,7 @@ User.belongsTo(Customer, {
     }
 });
 Customer.hasOne(User, {
-    foreignKey: 'userableId',
+    foreignKey: 'customer_id',
     constraints: false,
     scope: {
       userableType: 'customer'
@@ -123,7 +123,7 @@ User.belongsTo(Employee, {
     }
 });
 Employee.hasOne(User, {
-    foreignKey: 'userableId',
+    foreignKey: 'employee_id',
     constraints: false,
     scope: {
       userableType: 'employee'

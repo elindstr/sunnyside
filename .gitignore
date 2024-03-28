@@ -13,6 +13,7 @@ DS_Store
 .env
 el_sandbox/
 package-lock.json
+keys.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
