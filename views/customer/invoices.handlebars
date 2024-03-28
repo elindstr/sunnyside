@@ -1,12 +1,14 @@
-<h1>My Invoices</h1>
+<h1>{{customer}} Invoices</h1>
 <hr>
 
 <table>
 {{#each allRecords }}
     <tr>
         <td>{{format_date this.date}}</td>
-        <td>{{this.customer.first_name}} {{this.customer.last_name}}</td>
+        <td>{{customer.first_name}} {{customer.last_name}}</td>
         <td><a href="/customer/view/{{this.id}}">View invoice</a></td>
+        <td>{{this.customer_id}}</td>
+        <td>{{this.id}}</td>
     </tr>
 {{/each}}
 </table>
