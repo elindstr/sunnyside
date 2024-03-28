@@ -3,6 +3,9 @@ const router = require('express').Router();
 const customerRoutes = require('./customerRoutes');
 router.use('/customers', customerRoutes);
 
+const emailRoutes = require('./emailRoutes');
+router.use('/email', emailRoutes);
+
 const employeeRoutes = require('./employeeRoutes');
 router.use('/employees', employeeRoutes);
 

@@ -158,3 +158,22 @@ const generatePassword = async (event) => {
         alert("server error")
     }
 }  
+
+const emailCredentials  = async (user_id) => {
+    console.log(user_id)
+
+    const response = await fetch(`/admin/email/credentials/${user_id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+    });
+    if (response.ok) {
+        alert('Successfully email user new login credentials.')
+        //window.location.href = `/admin/users`
+    }
+    else {
+        const responseBody = await response.json();
+        console.log(responseBody.msg);
+        alert("server error")
+    }
+
+}
