@@ -167,7 +167,7 @@ const emailCredentials  = async (user_id) => {
         headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
-        alert('Successfully email user new login credentials.')
+        alert('Successfully emailed user new login credentials.')
         //window.location.href = `/admin/users`
     }
     else {

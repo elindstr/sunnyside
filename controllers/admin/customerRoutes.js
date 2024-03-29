@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
+const { Sequelize, Op } = require('sequelize');
 
 // for customer manager
 router.get('/', withAdminAuth, async (req, res) => {
@@ -8,7 +9,7 @@ router.get('/', withAdminAuth, async (req, res) => {
     const customers = await Customer.findAll({
       include: [
         { model: Product },
-        { model: Employee }
+        { model: Employee },
       ],
       where: {
         is_deleted: false
@@ -16,7 +17,6 @@ router.get('/', withAdminAuth, async (req, res) => {
       raw: true
     });
     
-
     // fixing nested objects for handlebars
     const customersObj = customers.map(customer => ({
       ...customer,
@@ -31,6 +31,22 @@ router.get('/', withAdminAuth, async (req, res) => {
           last_name: customer['employee.last_name'],
       }
     })); 
+
+    // manually add username
+    for (customer of customersObj) {
+      const user = await User.findAll({
+        where: {
+          customer_id: customer.id
+        },
+        raw: true
+      });
+      if (user.length) {
+        customer.username = user[0].username
+      }
+      else {
+        customer.username = ""
+      }
+    }
 
     res.render('admin/customers-manage', {
       logged_in: req.session.logged_in,
@@ -54,6 +70,20 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
       ],
       raw: true
     });
+
+    // manually add username
+    const user = await User.findAll({
+      where: {
+        customer_id: customer.id
+      },
+      raw: true
+    });
+    if (user.length) {
+      customer.username = user[0].username
+    }
+    else {
+      customer.username = ""
+    }
 
     // get customer record history
     let services = await Service.findAll({
@@ -96,10 +126,66 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
     );
     allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
 
+    //get unpaidInvoiceBalance
+    let unpaidInvoiceBalance = 0
+    const unpaidInvoices = await Invoice.findAll({
+      where: {
+        customer_id: req.params.id,
+        amount: {
+            [Sequelize.Op.gt]: Sequelize.col('amount_paid')
+        }
+      },
+      attributes: {
+        exclude: ['content']
+      },
+      raw: true
+    })
+    if (unpaidInvoices.length) {
+      for (let invoice of unpaidInvoices) {
+        unpaidInvoiceBalance += parseFloat(invoice.amount)
+        unpaidInvoiceBalance -= parseFloat(invoice.amount_paid)
+      }
+    }
+    unpaidInvoiceBalance = unpaidInvoiceBalance.toFixed(2)
+
+    // get amount of unbilled services and expenses
+    let unbilledServiceData = await Service.findAll({
+      where: { 
+        customer_id: req.params.id,
+        invoice_id: null 
+      },
+      include: [{
+        model: Product      
+      }],
+      raw: true
+    });
+    unbilledServiceData = unbilledServiceData.map(service => ({
+      ...service,
+      amount: service['product.rate']
+    }));
+    let unbilledServices = 0
+    for (let service of unbilledServiceData) {
+      unbilledServices+= parseFloat(service.amount)
+    }
+
+    const unbilledExpenseData = await Expense.findAll({
+      where: {
+        customer_id: req.params.id,
+        invoice_id: null
+      },
+      raw: true
+    })
+    let unbilledExpenses = 0
+    for (let expense of unbilledExpenseData) {
+      unbilledExpenses+= parseFloat(expense.amount)
+    }
+    let unbilledTotal = unbilledServices + unbilledExpenses
+    unbilledTotal = unbilledTotal.toFixed(2)
+
     //render
     res.render('admin/customers-view', {
       logged_in: req.session.logged_in,
-      customer, allRecords
+      customer, allRecords, unpaidInvoiceBalance, unbilledTotal
     })
   } catch (err) {
     console.log(err)

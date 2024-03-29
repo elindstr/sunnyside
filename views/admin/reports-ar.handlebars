@@ -1,0 +1,28 @@
+<h2>Aged Receivables</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>0-30</th>
+      <th>31-60</th>
+      <th>61-90</th>
+      <th>91+</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each customersObj}}
+    <tr>
+      <td><a href="/admin/customers/view/{{this.id}}">{{this.id}}</a></td>
+      <td>{{this.first_name}}</td>
+      <td>{{this.last_name}}</td>
+      <td>{{this.0}}</td>
+      <td>{{this.31}}</td>
+      <td>{{this.61}}</td>
+      <td>{{this.91}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
