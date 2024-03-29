@@ -57,7 +57,7 @@
                 <div>
                     <a href="/admin/invoices" class="btn btn-primary btn-block">Invoice Manager</a>
                 </div>
-            </div>
+            
             {{/if}}
 
             {{#if logged_in_as_employee}}
@@ -70,7 +70,8 @@
                 {{!-- customer nav goes here --}}
                 
             {{/if}}
-
+            </div>
+            
             <div class="col-md-6 col-lg-6 bg-white p-3">
                 <main> <!-- Box with the handlebars body -->
                     {{{ body }}}
