@@ -16,6 +16,9 @@ router.get('/dashboard', withAuth, async (req, res) => {
     userData = userData.get({ plain: true })
     res.render('admin/homepage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      logged_in_as_employee: (req.session.access_level == "employee"),
+      logged_in_as_customer: (req.session.access_level == "customer"),
       userData
     });  
   }
@@ -24,6 +27,9 @@ router.get('/dashboard', withAuth, async (req, res) => {
     userData = userData.get({ plain: true })
     res.render('employee/homepage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      logged_in_as_employee: (req.session.access_level == "employee"),
+      logged_in_as_customer: (req.session.access_level == "customer"),
       userData
     });  
   }
@@ -32,6 +38,9 @@ router.get('/dashboard', withAuth, async (req, res) => {
     userData = userData.get({ plain: true })
     res.render('customer/homepage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      logged_in_as_employee: (req.session.access_level == "employee"),
+      logged_in_as_customer: (req.session.access_level == "customer"),
       userData
     });  
   }

@@ -50,6 +50,7 @@ router.get('/', withAdminAuth, async (req, res) => {
 
     res.render('admin/customers-manage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customersObj
     })
   } catch (err) {
@@ -185,6 +186,7 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
     //render
     res.render('admin/customers-view', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customer, allRecords, unpaidInvoiceBalance, unbilledTotal
     })
   } catch (err) {
@@ -201,6 +203,7 @@ router.get('/create', withAdminAuth, async (req, res) => {
 
     res.render('admin/customers-create', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       products, employees,
     })
   } catch (err) {
@@ -232,6 +235,7 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
 
     res.render('admin/customers-edit', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customer, products, employees,
     })
   } catch (err) {

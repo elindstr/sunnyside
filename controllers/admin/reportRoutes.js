@@ -77,6 +77,7 @@ router.get('/', withAdminAuth, async (req, res) => {
         // render
         res.render('admin/reports-ar', {
             logged_in: req.session.logged_in,
+            logged_in_as_admin: (req.session.access_level == "admin"),
             arObj, ar0Total, ar30Total, ar60Total, ar90Total, arTotal
         })
     } catch (err) {
