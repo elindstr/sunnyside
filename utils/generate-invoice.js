@@ -4,6 +4,24 @@ const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Produ
 const { Sequelize, Op } = require('sequelize');
 const { format_date, get_today } = require('../utils/helpers');
 
+const batchGenerate = async (date, start_date, end_date) => {
+    // update batch table
+    await Batch.create({
+        date: end_date,
+        end_date: end_date
+    })
+    
+    // get all customer ids
+    const customerIDs = await Customer.findAll({
+        attributes: ['id'],
+        raw: true
+    })
+    // iteratively call generate 
+    for (idObj of customerIDs) {
+        await generate(idObj.id, date, start_date, end_date)
+    }
+}
+
 const generate = async (customer_id, date, start_date, end_date) => {
     // get general customer data 
     const customerData = await Customer.findByPk(customer_id, {raw: true}) 
@@ -160,4 +178,4 @@ const generate = async (customer_id, date, start_date, end_date) => {
     return
 }
 
-module.exports = {generate};
+module.exports = {generate, batchGenerate};

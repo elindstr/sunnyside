@@ -15,9 +15,26 @@ router.get('/', withAdminAuth, async (req, res) => {
       },
       raw: true
     });
+    
+
+    // fixing nested objects for handlebars
+    const customersObj = customers.map(customer => ({
+      ...customer,
+      product: {
+          id: customer['product.id'],
+          name: customer['product.name'],
+          rate: customer['product.rate']
+      },
+      employee: {
+          id: customer['employee.id'],
+          first_name: customer['employee.first_name'],
+          last_name: customer['employee.last_name'],
+      }
+    })); 
+
     res.render('admin/customers-manage', {
       logged_in: req.session.logged_in,
-      customers
+      customersObj
     })
   } catch (err) {
     console.log(err)
@@ -141,6 +158,7 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
 router.put('/edit/:id', withAdminAuth, async (req, res) => {
   try {
     console.log(`received request to update ${req.params.id}`)
+    console.log(req.body)
     const customerData = await Customer.update(req.body, {
       where: { id: req.params.id }
     });
