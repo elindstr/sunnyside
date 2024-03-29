@@ -2,33 +2,76 @@
 <html lang="en">
 
 <head>
-  <link rel='icon' href='data:,'>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sunnyside</title>
-  <link rel="stylesheet" href="/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunnyside</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    
 </head>
 
-<body>
-  <header>
-    <h1>
-      [main.handlebars: header, nav, footer]
-    </h1>
+<body class="d-flex flex-column h-100">
 
-    <nav>
-        <a href="/dashboard">user dashboard</a>
-        {{#if logged_in}}<a href="/logout">sign out</a>{{/if}}
-    </nav>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008080;"> <!-- Inline style for teal color -->
+            <div class="container">
+                <a class="navbar-brand" href="#">Sunnyside</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">User Dashboard</a>
+                        </li>
+                        {{#if logged_in}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Sign Out</a>
+                        </li>
+                        {{else}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Log In</a>
+                        </li>
+                        {{/if}}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-  </header>
-  <main>
-  
-    {{{ body }}}
-  
-  </main>
-  <footer>
-  </footer>
+    <div class="container-fluid flex-grow-1"> <!-- Container to hold the main content -->
+        <div class="row">
+            <div class="col-md-3 col-lg-3 bg-white p-3 mr-4 ml-4"> <!-- Left column with white background, padding, and left/right margin -->
+                <div class="mb-2">
+                    <a href="admin/customers" class="btn btn-primary btn-block">Customer Manager</a>
+                </div>
+                <div class="mb-2">
+                    <a href="admin/products" class="btn btn-primary btn-block">Product Manager</a>
+                </div>
+                <div class="mb-2">
+                    <a href="admin/employees" class="btn btn-primary btn-block">Employee Manager</a>
+                </div>
+                <div>
+                    <a href="admin/invoices" class="btn btn-primary btn-block">Invoice Manager</a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 bg-white p-3">
+                <main> <!-- Box with the handlebars body -->
+                    {{{ body }}}
+                </main>
+            </div>
+        </div>
+    </div>
 
+    <footer class="footer py-3" style="background-color: #008080; color: white;"> <!-- Inline style for teal background and white text -->
+        <div class="container text-center">
+            <span>&copy; 2024 Sunnyside. All rights reserved.</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

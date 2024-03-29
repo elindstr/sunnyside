@@ -1,6 +1,6 @@
-header {
-    border: 1px solid black;
-}
-nav {
-    float: right
+body {
+    background-image: url('../assets/water.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: blue;
 }
