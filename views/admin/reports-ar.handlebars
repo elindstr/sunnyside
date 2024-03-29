@@ -10,19 +10,32 @@
       <th>31-60</th>
       <th>61-90</th>
       <th>91+</th>
+      <th>Total</th>
     </tr>
   </thead>
   <tbody>
-    {{#each customersObj}}
+    <tr>
+    {{#each arObj}}
     <tr>
       <td><a href="/admin/customers/view/{{this.id}}">{{this.id}}</a></td>
       <td>{{this.first_name}}</td>
       <td>{{this.last_name}}</td>
-      <td>{{this.0}}</td>
-      <td>{{this.31}}</td>
-      <td>{{this.61}}</td>
-      <td>{{this.91}}</td>
+      <td>{{this.ar0}}</td>
+      <td>{{this.ar30}}</td>
+      <td>{{this.ar60}}</td>
+      <td>{{this.ar90}}</td>
+      <td>{{this.arTotal}}</td>
     </tr>
     {{/each}}
+    
+    <td><b>Totals</b></td>
+      <td></td>
+      <td></td>
+      <td>{{ar0Total}}</td>
+      <td>{{ar30Total}}</td>
+      <td>{{ar60Total}}</td>
+      <td>{{ar90Total}}</td>
+      <td>{{arTotal}}</td>
+    </tr>
   </tbody>
 </table>
