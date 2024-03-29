@@ -8,6 +8,7 @@ router.get('/', withAdminAuth, async (req, res) => {
     const products = await Product.findAll({ raw: true });
     res.render('admin/products-manage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       products
     })
   } catch (err) {
@@ -22,6 +23,7 @@ router.get('/create', withAdminAuth, async (req, res) => {
     const products = await Product.findAll({raw: true});
     res.render('admin/products-create', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       products,
     })
   } catch (err) {
@@ -48,6 +50,7 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
     const product = productData.get({ plain: true })
     res.render('admin/products-edit', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       product,
     })
   } catch (err) {

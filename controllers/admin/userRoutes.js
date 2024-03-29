@@ -26,6 +26,7 @@ router.get('/', withAdminAuth, async (req, res) => {
 
     res.render('admin/users-manage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       users
     })
   } catch (err) {
@@ -47,6 +48,7 @@ router.get('/create', withAdminAuth, async (req, res) => {
     });
     res.render('admin/users-create', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       employees, customers
     })
   } catch (err) {
@@ -114,6 +116,7 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
 
     res.render('admin/users-edit', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       user, employees, customers
     })
   } catch (err) {

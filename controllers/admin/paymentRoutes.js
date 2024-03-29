@@ -10,6 +10,7 @@ router.get('/', withAdminAuth, async (req, res) => {
 
     res.render('admin/payment-create', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customers
     })
   } catch (err) {

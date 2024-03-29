@@ -70,6 +70,7 @@ router.get('/', withAdminAuth, async (req, res) => {
     //render
     res.render('admin/invoices', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customers, customersCount, invoices, today, lastBatchRun
     })
   } catch (err) {
@@ -190,6 +191,7 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
     const invoice = invoiceData.get({ plain: true })
     res.render('admin/invoices-edit', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       invoice,
     })
   } catch (err) {

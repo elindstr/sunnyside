@@ -48,6 +48,7 @@ router.get('/', withAdminAuth, async (req, res) => {
       //render
       res.render('admin/records', {
         logged_in: req.session.logged_in,
+        logged_in_as_admin: (req.session.access_level == "admin"),
         allRecords
       })
     } catch (err) {
