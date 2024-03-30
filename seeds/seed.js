@@ -288,7 +288,7 @@ async function seedInvoices() {
     let stopLoopDate = new Date(2024, 2, 1);
     while (invoice_end_date < stopLoopDate) {
         for (let c = 1; c < 9; c++) {
-            await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date))
+            await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
             await Batch.create({
                 date: format_date(invoice_end_date),
                 end_date: format_date(invoice_end_date)
