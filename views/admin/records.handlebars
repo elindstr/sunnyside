@@ -1,50 +1,45 @@
-
 <h1>Records</h1>
-
 <form id="searchFilters" action="/admin/records/" method="get">
-    <div>
-        <label for="dateAfter">Date After:</label>
-        <input type="date" id="dateAfter" value="2000-01-01" name="dateAfter">
-    </div>
-    <div>
-        <label for="dateBefore">Date Before:</label>
-        <input type="date" value="2099-01-01" id="dateBefore" name="dateBefore">
-    </div>
-    <div>
-        <label for="filterByCustomer">Filter by Customer:</label>
-        <select id="filterByCustomer" name="filterByCustomer">
-            <option value="any">Any</option>
-            {{#each customers}}
-              <option value="{{this.id}}">{{this.first_name}} {{this.last_name}} ({{this.id}})</option>
-            {{/each}}
-        </select>
-    </div>
-    <div>
-    <fieldset>
-      <span>Include:</span>
-      <label><input type="checkbox" id="includeService" name="includeService" value="service" checked> Service</label>
-      <label><input type="checkbox" id="includeExpense"name="includeExpense" value="expense" checked> Expense</label>
-      <label><input type="checkbox" id="includeInvoice"name="includeInvoice" value="invoice" checked> Invoice</label>
-      <label><input type="checkbox" id="includePayment"name="includePayment" value="payment" checked> Payment</label>
+  <div class="row">
+    <fieldset class="col-md">
+      <legend>Date Range</legend>
+      <label for="dateAfter">Date After: <input type="date" id="dateAfter" name="dateAfter" value="2000-01-01"></label>
+      <label for="dateBefore">Date Before: <input type="date" id="dateBefore" name="dateBefore" value="2099-01-01"></label>
     </fieldset>
-    </div>
-    
 
-    <div>
-        <button type="submit">Search</button>
+    <fieldset class="col-md">
+      <legend>Include</legend>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="includeService" id="includeService" value="true" checked> Service</label>
+        <label><input type="checkbox" name="includeExpense" id="includeExpense" value="true" checked> Expense</label>
+      </div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="includeInvoice" id="includeInvoice" value="true" checked> Invoice</label>
+        <label><input type="checkbox" name="includePayment" id="includePayment" value="true" checked> Payment</label>
+      </div>
+    </fieldset>
+  </div>
+  <div class="row">
+    <fieldset class="col-md">
+      <legend>Filter</legend>
+      <label for="filterByCustomer">Filter by Customer:
+        <select id="filterByCustomer" name="filterByCustomer">
+          <option value="any">Any</option>
+          {{#each customers}}<option value="{{this.id}}">{{this.first_name}} {{this.last_name}} ({{this.id}})</option>{{/each}}
+        </select>
+      </label>
+    </fieldset>
+    <div class="col-md-auto">
+      <button type="submit" style="margin-top: 32px;">Search</button>
     </div>
+  </div>
 </form>
 
 <hr>
 <table id="records">
   <tr>
-    <th>Date </th>
-    <th>Customer ID</th>
-    <th>Type</th>
-    <th>Amount</th>
-    <th>Invoice ID</th>
+    <th>Date</th><th>Customer ID</th><th>Type</th><th>Amount</th><th>Invoice ID</th>
   </tr>
-
   {{#each allRecords}}
   <tr>
     <td>{{format_date this.date}}</td>
@@ -58,12 +53,17 @@
 
 <script>
   let searchObj = JSON.parse('{{{searchObj}}}');
+  
   document.getElementById('dateAfter').value = searchObj.dateAfter;
   document.getElementById('dateBefore').value = searchObj.dateBefore;
-  document.getElementById('filterByCustomer').value = searchObj.filterByCustomer;
-  
-  if (!searchObj.includeService) document.getElementById('includeService').checked = false;
-  if (!searchObj.includeExpense) document.getElementById('includeExpense').checked = false;
-  if (!searchObj.includeInvoice) document.getElementById('includeInvoice').checked = false;
-  if (!searchObj.includePayment) document.getElementById('includePayment').checked = false;
+  if (searchObj.filterByCustomer) {
+    document.getElementById('filterByCustomer').value = searchObj.filterByCustomer;
+  }
+  document.getElementById('includeService').checked = searchObj.includeService;
+  document.getElementById('includeExpense').checked = searchObj.includeExpense;
+  document.getElementById('includeInvoice').checked = searchObj.includeInvoice;
+  document.getElementById('includePayment').checked = searchObj.includePayment;
+
 </script>
+</script>
+

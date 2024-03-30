@@ -24,17 +24,28 @@ router.get('/', withAdminAuth, async (req, res) => {
         searchObj = {
           dateAfter: req.query.dateAfter,
           dateBefore: req.query.dateBefore,
-          includeService: req.query.includeService === 'service',
-          includeExpense: req.query.includeExpense === 'expense',
-          includeInvoice: req.query.includeInvoice === 'invoice',
-          includePayment: req.query.includePayment === 'payment'
         };
+
+        req.query.includeService?
+          searchObj.includeService = true: 
+          searchObj.includeService = false
+        req.query.includeExpense?
+          searchObj.includeExpense = true: 
+          searchObj.includeExpense = false 
+        req.query.includeInvoice?
+          searchObj.includeInvoice = true: 
+          searchObj.includeInvoice = false
+        req.query.includePayment?
+          searchObj.includePayment = true: 
+          searchObj.includePayment = false
+
         if (req.query.filterByCustomer) {
           searchObj.filterByCustomer = req.query.filterByCustomer
         }
         else {
-          searchObj = "any"
+          searchObj.filterByCustomer = "any"
         }
+
       
         // setup where clause
         whereClause = {

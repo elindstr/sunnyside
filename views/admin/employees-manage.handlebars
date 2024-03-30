@@ -1,7 +1,7 @@
 
 <h1>Manage Employees</h1>
 
-<a href="/admin/employees/create"><button>+ Create New</button></a>
+<a href="/admin/employees/create"><button style="float: right">+ Create New</button></a>
 
 <table id="employees">
   <thead>
@@ -23,7 +23,7 @@
       <td>{{this.last_name}}</td>
       <td>{{this.email}}</td>
       <td>{{this.role}}</td>
-      <td><a href="/admin/employees/edit/{{this.id}}"><button>Edit</button></a></td>
+      <td><a href="/admin/employees/edit/{{this.id}}"><button class="btn-edit">Edit</button></a></td>
     </tr>
     {{/each}}
 

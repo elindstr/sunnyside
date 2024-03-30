@@ -13,8 +13,14 @@ const format_date = (date) => {
     return `${year}-${month}-${day}`;
 }
 
-const generateSingleInvoice = async (event) => {
-    const customer_id = document.getElementById("customer_id").value
+const generateSingleInvoice = async (id) => {
+    // waiting effect
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('generateBatch').disabled = true;
+    document.getElementById('generateSingle').disabled = true;
+
+
+    const customer_id = id
     const date = get_today()
     const start_date = "2000-01-01"
     const end_date = document.getElementById("end_date").value
@@ -46,6 +52,11 @@ const generateSingleInvoice = async (event) => {
 }
 
 const generateBatchInvoices = async (event) => {
+    // waiting effect
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('generateBatch').disabled = true;
+    document.getElementById('generateSingle').disabled = true;
+
     const date = get_today()
     const start_date = "2000-01-01"
     const end_date = document.getElementById("end_date").value
