@@ -2,7 +2,7 @@
 
 ## Description
 
-Styled for a fictitious pool cleaning service, this cloud-based Enterprise Resource Planning (ERP) system is easily restylable for any small business to manage employee, customer, and product databases, assign and track employee assignments, generate invoices and handle payments, and run accounting reports. From a public-facing landing page, administrators can log in to the ERP system; employees can manage their work schedules, and log their services and expenses; customers can log in to view and pay their invoices.
+Styled for a fictitious pool cleaning service, this cloud-based Enterprise Resource Planning (ERP) system is easily restylable for any small business to manage employee, customer, and product databases, assign and track employee assignments, generate invoices and handle payments, and run accounting reports. From a public-facing landing page, administrators can login to their ERP dashboard, employees can login to manage their work schedules and log their services and expenses, and customers can login to view and pay their invoices.
 
 ## Technology
 
