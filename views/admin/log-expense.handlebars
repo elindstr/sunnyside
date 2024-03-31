@@ -1,0 +1,58 @@
+<h1>Log New Expense</h1>
+
+<form action="/admin/customers/new-expense/{{customer.id}}" method="post">
+  <table>
+    <tr>
+      <td><span>Date</span></td>
+      <td><input class="edit-inputs" type="date" name="date" id="date" value="{{today}}" /></td>
+    </tr>
+    <tr>
+      <td><span>Customer</span></td>
+      <td>
+        <select class="edit-inputs" name="customer_id" id="customer_id">
+          {{#each customers}}
+            <option value="{{this.id}}">{{this.first_name}} {{this.last_name}}</option>
+          {{/each}}
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td><span>Employee</span></td>
+      <td>
+        <select class="edit-inputs" name="employee_id" id="employee_id">
+          {{#each employees}}
+            <option value="{{this.id}}">{{this.first_name}} {{this.last_name}}</option>
+          {{/each}}
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td><span>Amount</span></td>
+      <td><input class="edit-inputs" type="text" name="amount" value="" /></td>
+    </tr>
+    <tr>
+      <td><span>Description</span></td>
+      <td><input class="edit-inputs" type="text" name="description" value="" /></td>
+    </tr>
+  </table>
+  <button id="save" type="submit">Save</button>
+  <a href="/admin/customers/expense/{{customer.id}}" class="btn" id="cancel">Cancel</a>
+</form>
+
+
+<script>
+  // load drop down selections
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('date').value = "{{today}}"
+    document.getElementById('customer_id').value = "{{customer.id}}"
+    document.getElementById('employee_id').value = "{{customer.employee_id}}"
+
+  // sanitize amount
+    const amountInput = document.querySelector('input[name="amount"]');
+    amountInput.addEventListener('input', function() {
+      let currentValue = amountInput.value;
+      let sanitizedValue = currentValue.replace(/[^0-9$.,]/g, '');
+      amountInput.value = sanitizedValue;
+    })
+  });
+</script>

@@ -61,9 +61,9 @@ router.get('/', withAdminAuth, async (req, res) => {
 
       // get customer record history
       let services = await Service.findAll({
-        include: [{
-          model: Product      
-        }],
+        include: [
+          {model: Product}
+        ],
         where: whereClause,
         raw: true
       });
@@ -73,6 +73,7 @@ router.get('/', withAdminAuth, async (req, res) => {
         amount: service['product.rate'],
         type: 'Service'
       }));
+
       const expenses = await Expense.findAll({
         where: whereClause,
         raw: true
@@ -97,7 +98,7 @@ router.get('/', withAdminAuth, async (req, res) => {
       if (searchObj.includeService) {
         allRecords = allRecords.concat(addType(services, 'Service'))
       }
-      if (searchObj.includeExpenses) {
+      if (searchObj.includeExpense) {
         allRecords = allRecords.concat(addType(expenses, 'Expense'))
       }
       if (searchObj.includeInvoice) {
@@ -109,9 +110,22 @@ router.get('/', withAdminAuth, async (req, res) => {
 
       // sort by date
       allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
- 
+      
+
       // for user selection
-      const customers = await Customer.findAll({raw: true})
+      const customers = await Customer.findAll({order: [['last_name', 'ASC']], raw: true})
+
+      //add customer names to allRecords
+      for (record of allRecords) {
+        const names = await Customer.findByPk(record.customer_id, {
+          attributes: ['first_name', 'last_name'],
+          raw: true
+      });
+        record.first_name = names.first_name
+        record.last_name = names.last_name
+      }
+
+      console.log(allRecords)
 
       //render
       res.render('admin/records', {

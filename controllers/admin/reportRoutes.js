@@ -25,6 +25,7 @@ router.get('/ar', withAdminAuth, async (req, res) => {
             attributes: {
                 include: ['id', 'first_name', 'last_name']
             },
+            order: [['last_name', 'ASC']],
             raw: true
         })
 
@@ -69,7 +70,7 @@ router.get('/ar', withAdminAuth, async (req, res) => {
             if (daysOld > 90) {ar90Total+= amount_unpaid}
             else if (daysOld > 60) {ar60Total+= amount_unpaid}
             else if (daysOld > 30) {ar30Total+= amount_unpaid}
-            else if (daysOld > 0) {ar0Total+= amount_unpaid}
+            else if (daysOld >= 0) {ar0Total+= amount_unpaid}
         }
         const arTotal = (ar0Total + ar30Total + ar60Total + ar90Total).toFixed(2)
         ar0Total = ar0Total.toFixed(2)

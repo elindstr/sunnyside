@@ -9,6 +9,7 @@ router.get('/', withAdminAuth, async (req, res) => {
       where: {
         is_deleted: false
       },
+      order: [['last_name', 'ASC']],
       raw: true
     });
     res.render('admin/employees-manage', {
