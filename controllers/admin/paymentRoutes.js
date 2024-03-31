@@ -6,7 +6,7 @@ const { Sequelize, Op } = require('sequelize');
 // save new payment
 router.get('/', withAdminAuth, async (req, res) => {
   try {
-    const customers = await Customer.findAll({ raw: true });
+    const customers = await Customer.findAll({ order: [['last_name', 'ASC']], raw: true });
 
     res.render('admin/payment-create', {
       logged_in: req.session.logged_in,

@@ -25,6 +25,7 @@ router.get('/ar', withAdminAuth, async (req, res) => {
             attributes: {
                 include: ['id', 'first_name', 'last_name']
             },
+            order: [['last_name', 'ASC']],
             raw: true
         })
 
