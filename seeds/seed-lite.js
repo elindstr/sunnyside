@@ -11,6 +11,7 @@ const seedDatabase = async () => {
     const employee = await Employee.bulkCreate(seedEmployee);
     const customer = await Customer.bulkCreate(seedCustomer);
     
+    await seedServicesandExpenses()
     const service = await Service.bulkCreate(seedService);
     const expense = await Expense.bulkCreate(seedExpense);
 
@@ -21,6 +22,7 @@ const seedDatabase = async () => {
         returning: true,
       });
     
+
     //await seedInvoices()
     //await seedPayments()
 
@@ -439,25 +441,33 @@ const seedInteraction = [
 
 let seedService = []
 let seedExpense = []
-let serviceDate = new Date(2023, 0, 2);
-let stopDate = new Date(2024, 2, 30);
-while (serviceDate < stopDate) {
-    for (let c = 1; c < seedCustomer.length+1; c++) {
-        seedService.push({
-            "date": format_date(serviceDate),
-            "employee_id": Math.floor(Math.random() * 2) + 1,
-            "customer_id": c,
-            "product_id": 1
-        })
+async function seedServicesandExpenses() {
+    let serviceDate = new Date(2023, 0, 2);
+    let stopDate = new Date(2024, 2, 30);
+    while (serviceDate < stopDate) {
+        for (let c = 1; c < seedCustomer.length+1; c++) {
+            let customer = await Customer.findByPk(c, {
+                raw: true,
+            });
+            console.log('452', customer.product_id)
+            seedService.push({
+                "date": format_date(serviceDate),
+                "employee_id": Math.floor(Math.random() * 2) + 1,
+                "customer_id": c,
+                "product_id": customer.product_id
+            })
+            if (Math.random() < .1) {
+                seedExpense.push({
+                    "date": format_date(serviceDate),
+                    "employee_id": Math.floor(Math.random() * 2) + 1,
+                    "customer_id": Math.floor(Math.random() * 8) + 1,
+                    "amount": 20.75,
+                    "description": "replace filter"
+                })
+            }
+        }
+        serviceDate.setDate(serviceDate.getDate() + 7);
     }
-    seedExpense.push({
-        "date": format_date(serviceDate),
-        "employee_id": Math.floor(Math.random() * 2) + 1,
-        "customer_id": Math.floor(Math.random() * 8) + 1,
-        "amount": 20.75,
-        "description": "replace filter"
-    })
-    serviceDate.setDate(serviceDate.getDate() + 7);
 }
 
 async function seedInvoices() {
