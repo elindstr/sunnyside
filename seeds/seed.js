@@ -513,6 +513,34 @@ async function seedPayments() {
         }
         date.setDate(date.getDate() + 30);
     }
+
+    // Randomly delete a few payments
+const paymentData = await Payment.findAll({
+    order: [['date', 'DESC']],
+    limit: 50,
+    raw: true
+});
+
+// Start from the last index, which is paymentIds.length - 1
+for (let i = paymentData.length - 1; i >= 0; i--) {
+    if (Math.random() < 0.1) {  // 10% missed payments
+        if (paymentData[i]) {
+
+            // Update invoice
+            await Invoice.update(
+                { amount_paid: 0 },
+                { where: { id: paymentData[i].invoice_id } }
+            );
+
+            // Delete payment
+            await Payment.destroy({
+                where: { id: paymentData[i].id }
+            });
+        }
+    }
+}
+
+
 }
 
 
