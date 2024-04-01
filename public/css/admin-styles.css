@@ -53,19 +53,29 @@ button:hover, .btn:hover, .btn-create:hover, .btn-edit:hover, .btn-view:hover {
     color: white
 }
 
-/* waiting effect on invoice generation */
+/* Waiting Effect on Invoice Generation */
 #overlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    display: none;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-}
-button:disabled {
-    background-color: #ccc;
-}
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2; 
+    cursor: progress;
+  }
+  #text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+  }
 
 /* Form Styles */
 form {
