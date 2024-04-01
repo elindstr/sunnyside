@@ -30,7 +30,7 @@ router.get('/ar', withAdminAuth, async (req, res) => {
         })
 
         // construct arObj of customer and their ARs for each daysToCheck
-        const arObj = {};
+        let arObj = {};
         customerList.forEach(customer => {
             let ar0 = 0, ar30 = 0, ar60 = 0, ar90 = 0;
             invoiceObj.forEach(invoice => {
@@ -78,13 +78,15 @@ router.get('/ar', withAdminAuth, async (req, res) => {
         ar60Total = ar60Total.toFixed(2)
         ar90Total = ar90Total.toFixed(2)
         
+        // sort AR object by value of key(arTotal)
+        const sortedArray = Object.entries(arObj).map(([id, data]) => data)
+        .sort((a, b) => parseFloat(b.arTotal) - parseFloat(a.arTotal));
         
-        //console.log(arObj)
         // render
         res.render('admin/reports-ar', {
             logged_in: req.session.logged_in,
             logged_in_as_admin: (req.session.access_level == "admin"),
-            arObj, ar0Total, ar30Total, ar60Total, ar90Total, arTotal
+            arObj: sortedArray, ar0Total, ar30Total, ar60Total, ar90Total, arTotal
         })
     } catch (err) {
         console.log(err)

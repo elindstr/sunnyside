@@ -14,11 +14,7 @@ const format_date = (date) => {
 }
 
 const generateSingleInvoice = async (id) => {
-    // waiting effect
-    document.getElementById('overlay').style.display = 'block';
-    document.getElementById('generateBatch').disabled = true;
-    document.getElementById('generateSingle').disabled = true;
-
+    waitingEffect()
 
     const customer_id = id
     const date = get_today()
@@ -36,7 +32,7 @@ const generateSingleInvoice = async (id) => {
     else {
         response.json().then(data => {
             console.log(data.message)
-
+            endWaitingEffect()
 
             if (data.message.name == "SequelizeDatabaseError" || data.message.name == "SequelizeForeignKeyConstraintError") {
                 alert("Couldn't locate that database record.")
@@ -52,10 +48,7 @@ const generateSingleInvoice = async (id) => {
 }
 
 const generateBatchInvoices = async (event) => {
-    // waiting effect
-    document.getElementById('overlay').style.display = 'block';
-    document.getElementById('generateBatch').disabled = true;
-    document.getElementById('generateSingle').disabled = true;
+    waitingEffect()
 
     const date = get_today()
     const start_date = "2000-01-01"
@@ -71,6 +64,7 @@ const generateBatchInvoices = async (event) => {
     else {
         response.json().then(data => {
             console.log(data.message)
+            endWaitingEffect()
 
             if (data.message.name == "SequelizeDatabaseError" || data.message.name == "SequelizeForeignKeyConstraintError") {
                 alert("Couldn't locate that database record.")
@@ -84,3 +78,15 @@ const generateBatchInvoices = async (event) => {
         })
     }
 }
+
+function waitingEffect () {
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('generateBatch').disabled = true;
+    document.getElementById('generateSingle').disabled = true;
+}
+function endWaitingEffect() {
+    // Hide overlay and enable buttons after action is completed
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('generateBatch').disabled = false;
+    document.getElementById('generateSingle').disabled = false;
+  }

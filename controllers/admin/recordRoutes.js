@@ -111,7 +111,6 @@ router.get('/', withAdminAuth, async (req, res) => {
       // sort by date
       allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
       
-
       // for user selection
       const customers = await Customer.findAll({order: [['last_name', 'ASC']], raw: true})
 

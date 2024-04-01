@@ -4,6 +4,7 @@ const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Produ
 const { Sequelize, Op } = require('sequelize');
 const { format_date, get_today } = require('../utils/helpers');
 const { sendEmail } = require('./email');
+const { getPaymentUrl } = require('./stripe');
 
 const batchGenerate = async (date, start_date, end_date) => {
     // update batch table
@@ -176,21 +177,28 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
             { where: { id: expense.id } }
         )
     })
-    
-    if (type != "seed") {
+
+    // get Stripe payment url
+    const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
+
+    if (type != "seed") {  // skip on seeding to prevent gmail limits
+        
         // notify customer of new invoice
         if (customerData.email) {
             const emailObject = {
                 from: 'Sunnyside Pools <sunnyside.sacramento@gmail.com>',
                 to: customerData.email,
                 subject: 'Sunnyside Invoice',
-                text: `Hi ${customerData.first_name}! You have a new invoice. Please login to your online dashboard <https://sunnyside-699326087e54.herokuapp.com/> to view it. 
+                text: `Hi ${customerData.first_name}! You have a new invoice. You may login to your online dashboard <https://sunnyside-699326087e54.herokuapp.com/> to view it.\n
                 
-                \n\n
+                We accept online payments here: ${stripe_payment_url}\n\n
+
                 Sunnyside Pools`,
                 html: `<p>Hi ${customerData.first_name}!</p> 
                 
-                <p>You have a new invoice from Sunnyside Pools. Please login to your <a href="https://sunnyside-699326087e54.herokuapp.com/">online dashboard</a> to view it.</p><br>
+                <p>You have a new invoice from Sunnyside Pools. Please login to your <a href="https://sunnyside-699326087e54.herokuapp.com/">online dashboard</a> to view it.</p>
+
+                <p>We accept online payments <a href='${stripe_payment_url}'>here</a></p>
 
                 <p>Sunnyside Pools</p>`
             }

@@ -52,9 +52,15 @@ Invoice.init(
           isDecimal: true
       },
       defaultValue: 0
-  },
-    content: {
-        type: DataTypes.TEXT, 
+    },
+      content: {
+          type: DataTypes.TEXT, 
+    },
+    stripe_invoice_id: {
+      type: DataTypes.STRING, 
+    },
+    stripe_payment_url: {
+      type: DataTypes.STRING, 
     }
   },
   {
