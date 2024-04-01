@@ -96,7 +96,6 @@ router.delete('/delete/:id', withAdminAuth, async (req, res) => {
   try {
 
     // de-associate invoices / customer credit
-    //...
 
     // destroy
     await Payment.destroy({

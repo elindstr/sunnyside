@@ -178,10 +178,11 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
         )
     })
     
-    // get Stripe payment url
-    const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
+    if (type != "seed") {  // skip on seeding because this is slow
 
-    if (type != "seed") {
+        // get Stripe payment url
+        const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
+        
         // notify customer of new invoice
         if (customerData.email) {
             const emailObject = {
@@ -191,7 +192,7 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
                 text: `Hi ${customerData.first_name}! You have a new invoice. You may login to your online dashboard <https://sunnyside-699326087e54.herokuapp.com/> to view it.\n
                 
                 We accept online payments here: ${stripe_payment_url}\n\n
-                
+
                 Sunnyside Pools`,
                 html: `<p>Hi ${customerData.first_name}!</p> 
                 

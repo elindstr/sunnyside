@@ -74,8 +74,8 @@ const seedCustomer = [
         "phone": "916-111-1111",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": null,
-        "employee_id": null,
+        "schedule": "M",
+        "employee_id": 1,
     },
     {
         "id": 2,
@@ -85,8 +85,8 @@ const seedCustomer = [
         "phone": "916-222-2222",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": null,
-        "employee_id": null,
+        "schedule": "T",
+        "employee_id": 1,
     },
     {
         "id": 3,
@@ -96,8 +96,8 @@ const seedCustomer = [
         "phone": "916-333-3333",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": null,
-        "employee_id": null,
+        "schedule": "W",
+        "employee_id": 1,
     },
     {
         "id": 4,
@@ -164,8 +164,186 @@ const seedCustomer = [
         "product_id": 1,
         "schedule": "R",
         "employee_id": 3,
+    },
+    {
+        "id": 10,
+        "first_name": "Aarav",
+        "last_name": "Brown",
+        "address": "778 Cypress Street",
+        "phone": "916-788-8426",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "W",
+        "employee_id": 3
+    },
+    {
+        "id": 11,
+        "first_name": "Liam",
+        "last_name": "Gupta",
+        "address": "498 Oak Street",
+        "phone": "916-407-6164",
+        "email": "elindstr@gmail.com",
+        "product_id": 2,
+        "schedule": "T",
+        "employee_id": 3
+    },
+    {
+        "id": 12,
+        "first_name": "Fatima",
+        "last_name": "Johnson",
+        "address": "709 Alder Street",
+        "phone": "916-626-8687",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "T",
+        "employee_id": 3
+    },
+    {
+        "id": 13,
+        "first_name": "Chen",
+        "last_name": "Jones",
+        "address": "299 Redwood Street",
+        "phone": "916-284-9362",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "W",
+        "employee_id": 1
+    },
+    {
+        "id": 14,
+        "first_name": "Mohamed",
+        "last_name": "Silva",
+        "address": "265 Alder Street",
+        "phone": "916-745-5422",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "R",
+        "employee_id": 1
+    },
+    {
+        "id": 15,
+        "first_name": "Al",
+        "last_name": "Smith",
+        "address": "1241 Cork Street",
+        "phone": "916-234-5422",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "M",
+        "employee_id": 3
+    },
+    {
+        "id": 16,
+        "first_name": "FirstName16",
+        "last_name": "LastName16",
+        "address": "116 Main Street",
+        "phone": "916-116-1016",
+        "email": "elindstr@gmail.com",
+        "product_id": 2,
+        "schedule": "T",
+        "employee_id": 2
+    },
+    {
+        "id": 17,
+        "first_name": "FirstName17",
+        "last_name": "LastName17",
+        "address": "117 Main Street",
+        "phone": "916-117-1017",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "W",
+        "employee_id": 3
+    },
+    {
+        "id": 18,
+        "first_name": "FirstName18",
+        "last_name": "LastName18",
+        "address": "118 Main Street",
+        "phone": "916-118-1018",
+        "email": "elindstr@gmail.com",
+        "product_id": 2,
+        "schedule": "R",
+        "employee_id": 1
+    },
+    {
+        "id": 19,
+        "first_name": "FirstName19",
+        "last_name": "LastName19",
+        "address": "119 Main Street",
+        "phone": "916-119-1019",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "F",
+        "employee_id": 2
+    },
+    {
+        "id": 20,
+        "first_name": "FirstName20",
+        "last_name": "LastName20",
+        "address": "120 Main Street",
+        "phone": "916-120-1020",
+        "email": "elindstr@gmail.com",
+        "product_id": 2,
+        "schedule": "M",
+        "employee_id": 3
+    },
+    {
+        "id": 21,
+        "first_name": "FirstName21",
+        "last_name": "LastName21",
+        "address": "121 Main Street",
+        "phone": "916-121-1021",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "T",
+        "employee_id": 1
+    },
+    {
+        "id": 22,
+        "first_name": "FirstName22",
+        "last_name": "LastName22",
+        "address": "122 Main Street",
+        "phone": "916-122-1022",
+        "email": "elindstr@gmail.com",
+        "product_id": 2,
+        "schedule": "W",
+        "employee_id": 2
+    },
+    {
+        "id": 23,
+        "first_name": "FirstName23",
+        "last_name": "LastName23",
+        "address": "123 Main Street",
+        "phone": "916-123-1023",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "R",
+        "employee_id": 3
+    },
+    {
+        "id": 24,
+        "first_name": "FirstName24",
+        "last_name": "LastName24",
+        "address": "124 Main Street",
+        "phone": "916-124-1024",
+        "email": "elindstr@gmail.com",
+        "product_id": 2,
+        "schedule": "F",
+        "employee_id": 1
+    },
+    {
+        "id": 25,
+        "first_name": "FirstName25",
+        "last_name": "LastName25",
+        "address": "125 Main Street",
+        "phone": "916-125-1025",
+        "email": "elindstr@gmail.com",
+        "product_id": 1,
+        "schedule": "M",
+        "employee_id": 2
     }
 ]
+    
+
 const seedUser = [
     {
         "id": 1,
@@ -264,7 +442,7 @@ let seedExpense = []
 let serviceDate = new Date(2023, 0, 2);
 let stopDate = new Date(2024, 2, 30);
 while (serviceDate < stopDate) {
-    for (let c = 1; c < 8; c++) {
+    for (let c = 1; c < seedCustomer.length+1; c++) {
         seedService.push({
             "date": format_date(serviceDate),
             "employee_id": Math.floor(Math.random() * 2) + 1,
@@ -287,7 +465,7 @@ async function seedInvoices() {
     let invoice_end_date = new Date(2023, 1, 2);
     let stopLoopDate = new Date(2024, 2, 1);
     while (invoice_end_date < stopLoopDate) {
-        for (let c = 1; c < 9; c++) {
+        for (let c = 1; c < seedCustomer.length+1; c++) {
             await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
             await Batch.create({
                 date: format_date(invoice_end_date),
@@ -303,7 +481,7 @@ async function seedPayments() {
     let date = new Date(2023, 0, 20);
     let stopLoopDate = new Date(2024, 2, 1);
     while (date < stopLoopDate) {
-        for (let c = 1; c < 9; c++) {
+        for (let c = 1; c < seedCustomer.length+1; c++) {
 
             // look up most recent invoice
             invoiceData = await Invoice.findAll({
@@ -336,6 +514,7 @@ async function seedPayments() {
         date.setDate(date.getDate() + 30);
     }
 }
+
 
 
 seedDatabase()
