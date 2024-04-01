@@ -13,6 +13,7 @@ const seedDatabase = async () => {
     const employee = await Employee.bulkCreate(seedEmployee);
     const customer = await Customer.bulkCreate(seedCustomer);
     
+    await seedServicesandExpenses()
     const service = await Service.bulkCreate(seedService);
     const expense = await Expense.bulkCreate(seedExpense);
 
@@ -441,41 +442,48 @@ const seedInteraction = [
 
 let seedService = []
 let seedExpense = []
-let serviceDate = new Date(2023, 0, 2);
-let stopDate = new Date(2024, 2, 30);
-while (serviceDate < stopDate) {
-    for (let c = 1; c < seedCustomer.length+1; c++) {
-        seedService.push({
-            "date": format_date(serviceDate),
-            "employee_id": Math.floor(Math.random() * 2) + 1,
-            "customer_id": c,
-            "product_id": 1
-        })
-    }
-    seedExpense.push({
-        "date": format_date(serviceDate),
-        "employee_id": Math.floor(Math.random() * 2) + 1,
-        "customer_id": Math.floor(Math.random() * 8) + 1,
-        "amount": 20.75,
-        "description": "replace filter"
-    })
-    serviceDate.setDate(serviceDate.getDate() + 7);
-}
-
-async function seedInvoices() {
-    let invoice_start_date = new Date(2023, 0, 1);
-    let invoice_end_date = new Date(2023, 1, 2);
-    let stopLoopDate = new Date(2024, 2, 1);
-    while (invoice_end_date < stopLoopDate) {
+async function seedServicesandExpenses() {
+    let serviceDate = new Date(2023, 0, 2);
+    let stopDate = new Date(2024, 2, 30);
+    while (serviceDate < stopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
-            await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
-            await Batch.create({
-                date: format_date(invoice_end_date),
-                end_date: format_date(invoice_end_date)
+            let customer = await Customer.findByPk(c, {
+                raw: true,
+            });
+            seedService.push({
+                "date": format_date(serviceDate),
+                "employee_id": Math.floor(Math.random() * 2) + 1,
+                "customer_id": c,
+                "product_id": customer.product_id
             })
+            if (Math.random() < .1) {
+                seedExpense.push({
+                    "date": format_date(serviceDate),
+                    "employee_id": Math.floor(Math.random() * 2) + 1,
+                    "customer_id": Math.floor(Math.random() * 8) + 1,
+                    "amount": 20.75,
+                    "description": "replace filter"
+                })
+            }
         }
-        invoice_start_date.setDate(invoice_start_date.getDate() + 30);
-        invoice_end_date.setDate(invoice_end_date.getDate() + 30);
+        serviceDate.setDate(serviceDate.getDate() + 7);
+    }
+
+    async function seedInvoices() {
+        let invoice_start_date = new Date(2023, 0, 1);
+        let invoice_end_date = new Date(2023, 1, 2);
+        let stopLoopDate = new Date(2024, 2, 1);
+        while (invoice_end_date < stopLoopDate) {
+            for (let c = 1; c < seedCustomer.length+1; c++) {
+                await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
+                await Batch.create({
+                    date: format_date(invoice_end_date),
+                    end_date: format_date(invoice_end_date)
+                })
+            }
+            invoice_start_date.setDate(invoice_start_date.getDate() + 30);
+            invoice_end_date.setDate(invoice_end_date.getDate() + 30);
+        }
     }
 }
 
