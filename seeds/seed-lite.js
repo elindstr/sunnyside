@@ -1,5 +1,3 @@
-// This seed file takes about 12 minutes to complete. For a faster seed file, without invoice or payment data, use seed-lite.js. 
-
 const sequelize = require('../config/connection');
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { format_date } = require('../utils/helpers');
@@ -23,8 +21,8 @@ const seedDatabase = async () => {
         returning: true,
       });
     
-    await seedInvoices()
-    await seedPayments()
+    //await seedInvoices()
+    //await seedPayments()
 
     process.exit(0)
 }

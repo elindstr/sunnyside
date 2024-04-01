@@ -177,11 +177,11 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
             { where: { id: expense.id } }
         )
     })
-    
-    if (type != "seed") {  // skip on seeding because this is slow
 
-        // get Stripe payment url
-        const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
+    // get Stripe payment url
+    const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
+
+    if (type != "seed") {  // skip on seeding to prevent gmail limits
         
         // notify customer of new invoice
         if (customerData.email) {
