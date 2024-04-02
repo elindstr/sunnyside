@@ -468,22 +468,22 @@ async function seedServicesandExpenses() {
         }
         serviceDate.setDate(serviceDate.getDate() + 7);
     }
+}
 
-    async function seedInvoices() {
-        let invoice_start_date = new Date(2023, 0, 1);
-        let invoice_end_date = new Date(2023, 1, 2);
-        let stopLoopDate = new Date(2024, 2, 1);
-        while (invoice_end_date < stopLoopDate) {
-            for (let c = 1; c < seedCustomer.length+1; c++) {
-                await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
-                await Batch.create({
-                    date: format_date(invoice_end_date),
-                    end_date: format_date(invoice_end_date)
-                })
-            }
-            invoice_start_date.setDate(invoice_start_date.getDate() + 30);
-            invoice_end_date.setDate(invoice_end_date.getDate() + 30);
+async function seedInvoices() {
+    let invoice_start_date = new Date(2023, 0, 1);
+    let invoice_end_date = new Date(2023, 1, 2);
+    let stopLoopDate = new Date(2024, 2, 1);
+    while (invoice_end_date < stopLoopDate) {
+        for (let c = 1; c < seedCustomer.length+1; c++) {
+            await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
+            await Batch.create({
+                date: format_date(invoice_end_date),
+                end_date: format_date(invoice_end_date)
+            })
         }
+        invoice_start_date.setDate(invoice_start_date.getDate() + 30);
+        invoice_end_date.setDate(invoice_end_date.getDate() + 30);
     }
 }
 
