@@ -468,22 +468,22 @@ async function seedServicesandExpenses() {
         }
         serviceDate.setDate(serviceDate.getDate() + 7);
     }
-}
 
-async function seedInvoices() {
-    let invoice_start_date = new Date(2023, 0, 1);
-    let invoice_end_date = new Date(2023, 1, 2);
-    let stopLoopDate = new Date(2024, 2, 1);
-    while (invoice_end_date < stopLoopDate) {
-        for (let c = 1; c < seedCustomer.length+1; c++) {
-            await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
-            await Batch.create({
-                date: format_date(invoice_end_date),
-                end_date: format_date(invoice_end_date)
-            })
+    async function seedInvoices() {
+        let invoice_start_date = new Date(2023, 0, 1);
+        let invoice_end_date = new Date(2023, 1, 2);
+        let stopLoopDate = new Date(2024, 2, 1);
+        while (invoice_end_date < stopLoopDate) {
+            for (let c = 1; c < seedCustomer.length+1; c++) {
+                await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
+                await Batch.create({
+                    date: format_date(invoice_end_date),
+                    end_date: format_date(invoice_end_date)
+                })
+            }
+            invoice_start_date.setDate(invoice_start_date.getDate() + 30);
+            invoice_end_date.setDate(invoice_end_date.getDate() + 30);
         }
-        invoice_start_date.setDate(invoice_start_date.getDate() + 30);
-        invoice_end_date.setDate(invoice_end_date.getDate() + 30);
     }
 }
 
@@ -532,23 +532,23 @@ const paymentData = await Payment.findAll({
 });
 
 // Start from the last index, which is paymentIds.length - 1
-// for (let i = paymentData.length - 1; i >= 0; i--) {
-//     if (Math.random() < 0.1) {  // 10% missed payments
-//         if (paymentData[i]) {
+for (let i = paymentData.length - 1; i >= 0; i--) {
+    if (Math.random() < 0.1) {  // 10% missed payments
+        if (paymentData[i]) {
 
-//             // Update invoice
-//             await Invoice.update(
-//                 { amount_paid: 0 },
-//                 { where: { id: paymentData[i].invoice_id } }
-//             );
+            // Update invoice
+            await Invoice.update(
+                { amount_paid: 0 },
+                { where: { id: paymentData[i].invoice_id } }
+            );
 
-//             // Delete payment
-//             await Payment.destroy({
-//                 where: { id: paymentData[i].id }
-//             });
-//         }
-//     }
-// }
+            // Delete payment
+            await Payment.destroy({
+                where: { id: paymentData[i].id }
+            });
+        }
+    }
+}
 
 
 }
