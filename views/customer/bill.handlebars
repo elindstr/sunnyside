@@ -1,0 +1,11 @@
+<h1>Bill for {{format_date bill.date}}</h1>
+
+<div class='invoice-body'>
+    <strong>Billed To:</strong><br>
+    {{bill.customer.first_name}} {{bill.customer.last_name}}<br>
+    {{bill.customer.address}}<br>
+    {{bill.customer.email}}<br>
+</div>
+
+<div>Total amount paid: {{bill.amount}}</div>
+
