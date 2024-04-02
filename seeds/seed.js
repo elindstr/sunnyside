@@ -532,23 +532,23 @@ const paymentData = await Payment.findAll({
 });
 
 // Start from the last index, which is paymentIds.length - 1
-for (let i = paymentData.length - 1; i >= 0; i--) {
-    if (Math.random() < 0.1) {  // 10% missed payments
-        if (paymentData[i]) {
+// for (let i = paymentData.length - 1; i >= 0; i--) {
+//     if (Math.random() < 0.1) {  // 10% missed payments
+//         if (paymentData[i]) {
 
-            // Update invoice
-            await Invoice.update(
-                { amount_paid: 0 },
-                { where: { id: paymentData[i].invoice_id } }
-            );
+//             // Update invoice
+//             await Invoice.update(
+//                 { amount_paid: 0 },
+//                 { where: { id: paymentData[i].invoice_id } }
+//             );
 
-            // Delete payment
-            await Payment.destroy({
-                where: { id: paymentData[i].id }
-            });
-        }
-    }
-}
+//             // Delete payment
+//             await Payment.destroy({
+//                 where: { id: paymentData[i].id }
+//             });
+//         }
+//     }
+// }
 
 
 }
