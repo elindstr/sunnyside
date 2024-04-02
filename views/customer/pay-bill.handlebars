@@ -7,5 +7,7 @@
     {{bill.customer.email}}<br>
 </div>
 
-<div>Total amount paid: {{bill.amount}}</div>
-
+<div>Total amount due: {{bill.amount}}</div>
+{{#if bill.hasOutstandingAmount}}
+<div><a href={{bill.invoice.stripe_payment_url}}>Make a payment</a></div>
+{{/if}}
