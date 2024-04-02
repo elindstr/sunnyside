@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
 const { Sequelize, Op } = require('sequelize');
+const { format_date, get_today } = require('../../utils/helpers');
 
 // for customer manager
 router.get('/', withAdminAuth, async (req, res) => {
@@ -14,6 +15,7 @@ router.get('/', withAdminAuth, async (req, res) => {
       where: {
         is_deleted: false
       },
+      order: [['last_name', 'ASC']],
       raw: true
     });
     
@@ -50,6 +52,7 @@ router.get('/', withAdminAuth, async (req, res) => {
 
     res.render('admin/customers-manage', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customersObj
     })
   } catch (err) {
@@ -68,7 +71,8 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
         { model: Product },
         { model: Employee }
       ],
-      raw: true
+      raw: true,
+      nest: true
     });
 
     // manually add username
@@ -185,6 +189,7 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
     //render
     res.render('admin/customers-view', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customer, allRecords, unpaidInvoiceBalance, unbilledTotal
     })
   } catch (err) {
@@ -201,6 +206,7 @@ router.get('/create', withAdminAuth, async (req, res) => {
 
     res.render('admin/customers-create', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       products, employees,
     })
   } catch (err) {
@@ -232,6 +238,7 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
 
     res.render('admin/customers-edit', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customer, products, employees,
     })
   } catch (err) {
@@ -243,8 +250,6 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
 // Update existing customer
 router.put('/edit/:id', withAdminAuth, async (req, res) => {
   try {
-    console.log(`received request to update ${req.params.id}`)
-    console.log(req.body)
     const customerData = await Customer.update(req.body, {
       where: { id: req.params.id }
     });
@@ -271,5 +276,343 @@ router.delete('/edit/:id', withAdminAuth, async (req, res) => {
     res.status(500).json({message: err});
   }
 })
+
+// Employee Logging
+
+// Log New Service (with customer id) (serving GET Page)
+router.get('/new-service/:id', withAdminAuth, async (req, res) => {
+  try {
+    const customer_id = req.params.id
+    const customer = await Customer.findByPk(customer_id, {
+      include: [{ model: Product }, { model: Employee }],
+      raw: true
+    });
+    const customers = await Customer.findAll({order: [['last_name', 'ASC']], raw: true});
+    const employees = await Employee.findAll({order: [['last_name', 'ASC']], raw: true});
+    const products = await Product.findAll({raw: true});
+    const today = get_today()
+    
+    res.render('admin/log-service', {
+      logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      customer, customers, employees, products, today
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
+
+// Log New Service (with customer id) (receiving POST)
+router.post('/new-service/:id', withAdminAuth, async (req, res) => { 
+  try {
+    const {date, customer_id, employee_id, product_id} = req.body
+    const status = await Service.create({
+      date, customer_id,employee_id, product_id
+    })
+    //success; return to customers/view
+
+
+    //rendering view (code copied from above)
+    // get general customer data
+    const customer = await Customer.findByPk(req.params.id, {
+      include: [
+        { model: Product },
+        { model: Employee }
+      ],
+      raw: true,
+      nest: true
+    });
+
+    // manually add username
+    const user = await User.findAll({
+      where: {
+        customer_id: customer.id
+      },
+      raw: true
+    });
+    if (user.length) {
+      customer.username = user[0].username
+    }
+    else {
+      customer.username = ""
+    }
+
+    // get customer record history
+    let services = await Service.findAll({
+      where: { customer_id: req.params.id },
+      include: [{
+        model: Product      
+      }],
+      raw: true
+    });
+    //convert product.rate to "amount" for flattening into other objects
+    services = services.map(service => ({
+      ...service,
+      amount: service['product.rate'],
+      type: 'Service'
+    }));
+    const expenses = await Expense.findAll({
+      where: { customer_id: req.params.id },
+      raw: true
+    });
+    const invoices = await Invoice.findAll({
+      where: { customer_id: req.params.id },
+      attributes: {
+        include: [['id', 'invoice_id']], 
+        exclude: ['content'],
+      },
+      raw: true
+    });
+    const payments = await Payment.findAll({
+      where: { customer_id: req.params.id },
+      raw: true
+    });
+    // combine records
+    let allRecords = [];
+    const addType = (array, type) => array.map(item => ({ ...item, type }));
+    allRecords = allRecords.concat(
+      addType(services, 'Service'),
+      addType(expenses, 'Expense'),
+      addType(invoices, 'Invoice'),
+      addType(payments, 'Payment')
+    );
+    allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    //get unpaidInvoiceBalance
+    let unpaidInvoiceBalance = 0
+    const unpaidInvoices = await Invoice.findAll({
+      where: {
+        customer_id: req.params.id,
+        amount: {
+            [Sequelize.Op.gt]: Sequelize.col('amount_paid')
+        }
+      },
+      attributes: {
+        exclude: ['content']
+      },
+      raw: true
+    })
+    if (unpaidInvoices.length) {
+      for (let invoice of unpaidInvoices) {
+        unpaidInvoiceBalance += parseFloat(invoice.amount)
+        unpaidInvoiceBalance -= parseFloat(invoice.amount_paid)
+      }
+    }
+    unpaidInvoiceBalance = unpaidInvoiceBalance.toFixed(2)
+
+    // get amount of unbilled services and expenses
+    let unbilledServiceData = await Service.findAll({
+      where: { 
+        customer_id: req.params.id,
+        invoice_id: null 
+      },
+      include: [{
+        model: Product      
+      }],
+      raw: true
+    });
+    unbilledServiceData = unbilledServiceData.map(service => ({
+      ...service,
+      amount: service['product.rate']
+    }));
+    let unbilledServices = 0
+    for (let service of unbilledServiceData) {
+      unbilledServices+= parseFloat(service.amount)
+    }
+
+    const unbilledExpenseData = await Expense.findAll({
+      where: {
+        customer_id: req.params.id,
+        invoice_id: null
+      },
+      raw: true
+    })
+    let unbilledExpenses = 0
+    for (let expense of unbilledExpenseData) {
+      unbilledExpenses+= parseFloat(expense.amount)
+    }
+    let unbilledTotal = unbilledServices + unbilledExpenses
+    unbilledTotal = unbilledTotal.toFixed(2)
+
+    //render
+    res.render('admin/customers-view', {
+      logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      customer, allRecords, unpaidInvoiceBalance, unbilledTotal
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
+
+// Log New Expense (with customer id) (serving GET Page)
+router.get('/new-expense/:id', withAdminAuth, async (req, res) => {
+  try {
+    const customer_id = req.params.id
+    const customer = await Customer.findByPk(customer_id, {
+      include: [{ model: Product }, { model: Employee }],
+      raw: true
+    });
+    const customers = await Customer.findAll({order: [['last_name', 'ASC']], raw: true});
+    const employees = await Employee.findAll({order: [['last_name', 'ASC']], raw: true});
+    const today = get_today()
+    
+    res.render('admin/log-expense', {
+      logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      customer, customers, employees, today
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
+
+// Log New Expense (with customer id) (receiving POST)
+router.post('/new-expense/:id', withAdminAuth, async (req, res) => {
+  try {
+    let {date, customer_id, employee_id, amount, description} = req.body
+    amount = amount.replace(/\$/g, '').replace(/,/g, '');
+    const status = await Expense.create({
+      date, customer_id, employee_id, amount, description
+    })
+    console.log(status)
+    //success; return to customers/view
+
+    //rendering view (code copied from above)
+    // get general customer data
+    const customer = await Customer.findByPk(req.params.id, {
+      include: [
+        { model: Product },
+        { model: Employee }
+      ],
+      raw: true,
+      nest: true
+    });
+
+    // manually add username
+    const user = await User.findAll({
+      where: {
+        customer_id: customer.id
+      },
+      raw: true
+    });
+    if (user.length) {
+      customer.username = user[0].username
+    }
+    else {
+      customer.username = ""
+    }
+
+    // get customer record history
+    let services = await Service.findAll({
+      where: { customer_id: req.params.id },
+      include: [{
+        model: Product      
+      }],
+      raw: true
+    });
+    //convert product.rate to "amount" for flattening into other objects
+    services = services.map(service => ({
+      ...service,
+      amount: service['product.rate'],
+      type: 'Service'
+    }));
+    const expenses = await Expense.findAll({
+      where: { customer_id: req.params.id },
+      raw: true
+    });
+    const invoices = await Invoice.findAll({
+      where: { customer_id: req.params.id },
+      attributes: {
+        include: [['id', 'invoice_id']], 
+        exclude: ['content'],
+      },
+      raw: true
+    });
+    const payments = await Payment.findAll({
+      where: { customer_id: req.params.id },
+      raw: true
+    });
+    // combine records
+    let allRecords = [];
+    const addType = (array, type) => array.map(item => ({ ...item, type }));
+    allRecords = allRecords.concat(
+      addType(services, 'Service'),
+      addType(expenses, 'Expense'),
+      addType(invoices, 'Invoice'),
+      addType(payments, 'Payment')
+    );
+    allRecords.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    //get unpaidInvoiceBalance
+    let unpaidInvoiceBalance = 0
+    const unpaidInvoices = await Invoice.findAll({
+      where: {
+        customer_id: req.params.id,
+        amount: {
+            [Sequelize.Op.gt]: Sequelize.col('amount_paid')
+        }
+      },
+      attributes: {
+        exclude: ['content']
+      },
+      raw: true
+    })
+    if (unpaidInvoices.length) {
+      for (let invoice of unpaidInvoices) {
+        unpaidInvoiceBalance += parseFloat(invoice.amount)
+        unpaidInvoiceBalance -= parseFloat(invoice.amount_paid)
+      }
+    }
+    unpaidInvoiceBalance = unpaidInvoiceBalance.toFixed(2)
+
+    // get amount of unbilled services and expenses
+    let unbilledServiceData = await Service.findAll({
+      where: { 
+        customer_id: req.params.id,
+        invoice_id: null 
+      },
+      include: [{
+        model: Product      
+      }],
+      raw: true
+    });
+    unbilledServiceData = unbilledServiceData.map(service => ({
+      ...service,
+      amount: service['product.rate']
+    }));
+    let unbilledServices = 0
+    for (let service of unbilledServiceData) {
+      unbilledServices+= parseFloat(service.amount)
+    }
+
+    const unbilledExpenseData = await Expense.findAll({
+      where: {
+        customer_id: req.params.id,
+        invoice_id: null
+      },
+      raw: true
+    })
+    let unbilledExpenses = 0
+    for (let expense of unbilledExpenseData) {
+      unbilledExpenses+= parseFloat(expense.amount)
+    }
+    let unbilledTotal = unbilledServices + unbilledExpenses
+    unbilledTotal = unbilledTotal.toFixed(2)
+
+    //render
+    res.render('admin/customers-view', {
+      logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
+      customer, allRecords, unpaidInvoiceBalance, unbilledTotal
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
 
 module.exports = router;

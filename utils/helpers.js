@@ -15,10 +15,10 @@ const format_date = (date) => {
 
 const calculateDaysBetweenDates = (date1, date2) => {
   try {
-    const date1 = new Date(date1);
-    const date2 = new Date(date2);
+    date1 = new Date(date1);
+    date2 = new Date(date2);
   }
-  catch {}
+  catch {return null}
   const differenceInMilliseconds = Math.abs(date2 - date1);
   const days = differenceInMilliseconds / (24 * 60 * 60 * 1000);
   return days;

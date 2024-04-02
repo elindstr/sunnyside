@@ -3,28 +3,28 @@
 <table>
   <tr>
     <td><span>First Name</span></td>
-    <td><input type="text" id="first_name" value="{{customer.first_name}}"/></td>
+    <td><input class="edit-inputs" type="text" id="first_name" value="{{customer.first_name}}"/></td>
   </tr>
   <tr>
     <td><span>Last Name</span></td>
-    <td><input type="text" id="last_name" value="{{customer.last_name}}" /></td>
+    <td><input class="edit-inputs" type="text" id="last_name" value="{{customer.last_name}}" /></td>
   </tr>
   <tr>
     <td><span>Address</span></td>
-    <td><input type="text" id="address" value="{{customer.address}}" /></td>
+    <td><input class="edit-inputs" type="text" id="address" value="{{customer.address}}" /></td>
   </tr>
   <tr>
     <td><span>Phone</span></td>
-    <td><input type="text" id="phone" value="{{customer.phone}}" /></td>
+    <td><input class="edit-inputs" type="text" id="phone" value="{{customer.phone}}" /></td>
   </tr>
   <tr>
     <td><span>Email</span></td>
-    <td><input type="text" id="email" value="{{customer.email}}" /></td>
+    <td><input class="edit-inputs" type="text" id="email" value="{{customer.email}}" /></td>
   </tr>
   <tr>
     <td><span>Product</span></td>
     <td>
-      <select id="product">
+      <select class="edit-inputs" id="product">
         <option value="">-</option>
         {{#each products}}
           <option value="{{this.id}}">{{this.name}}</option>
@@ -34,12 +34,12 @@
   </tr>
   <tr>
     <td><span>Schedule</span></td>
-    <td><input type="text" id="schedule" value="{{customer.schedule}}" /></td>
+    <td><input class="edit-inputs" type="text" id="schedule" value="{{customer.schedule}}" /></td>
   </tr>
   <tr>
     <td><span>Cleaner</span></td>
     <td>
-      <select id="cleaner">
+      <select class="edit-inputs" id="cleaner">
         <option value="">-</option>
         {{#each employees}}
           <option value="{{this.id}}">{{this.first_name}}</option>

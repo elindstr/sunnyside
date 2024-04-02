@@ -1,18 +1,9 @@
 const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
-const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
+const { withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth } = require('../../utils/auth');
+const { sendEmail } = require('../../utils/email');
 var generator = require('generate-password');
-const nodemailer = require('nodemailer');
-require('dotenv').config();
 
-// nodemailer credentials
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: "sunnyside.sacramento@gmail.com",
-      pass: process.env.GAUTH
-    },
-});
 
 // email user credentials
 router.post('/credentials/:id', withAdminAuth, async (req, res) => {
@@ -47,32 +38,31 @@ router.post('/credentials/:id', withAdminAuth, async (req, res) => {
 
     // prepare email object
     const emailObject = {
-      mailTo: user.email,
-      mailSubject: 'Sunnyside User Login',
-      mailText: `Hi ${user.first_name}! Here are new login credentials to your Sunnyside online dashboard:\n
+      from: 'Sunnyside Pools <sunnyside.sacramento@gmail.com>',
+      to: user.email,
+      subject: 'Sunnyside User Login',
+      text: `Hi ${user.first_name}! Here are new login credentials to your Sunnyside online dashboard <https://sunnyside-699326087e54.herokuapp.com/>:\n
       \t username: ${user.username}\n
       \t password: ${newPassword}\n
       \n\n
-      Sunnyside Pools`
+      Sunnyside Pools`,
+      html: `<p>Hi ${user.first_name}! Here are new login credentials to your Sunnyside <a href="https://sunnyside-699326087e54.herokuapp.com/">online dashboard</a>:</p>
+      <ul>
+          <li>username: ${user.username}</li>
+          <li>password: ${newPassword}</li>
+      </ul><br>
+      
+      <p>Sunnyside Pools</p>`,
     }
-
+    
     // send email
-    const info = await transporter.sendMail({
-      from: 'Sunnyside Pools <sunnyside.sacramento@gmail.com>',
-      to: emailObject.mailTo,
-      subject: emailObject.mailSubject,
-      text: emailObject.mailText
-      //html: emailObject.mailHtml
-    });
-    res.status(200).json({message: 'success'});
+    const info = await sendEmail(emailObject)
 
+    res.status(200).json({message: 'success'});
   } catch (err) {
     console.log(err)
     res.status(500).json({message: err});
   }
 });
-
-
-
 
 module.exports = router;

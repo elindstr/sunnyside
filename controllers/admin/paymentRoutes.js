@@ -6,10 +6,15 @@ const { Sequelize, Op } = require('sequelize');
 // save new payment
 router.get('/', withAdminAuth, async (req, res) => {
   try {
-    const customers = await Customer.findAll({ raw: true });
+    const customers = await Customer.findAll({ 
+      order: [['last_name', 'ASC']], 
+      where: {is_deleted: false},
+      raw: true 
+    });
 
     res.render('admin/payment-create', {
       logged_in: req.session.logged_in,
+      logged_in_as_admin: (req.session.access_level == "admin"),
       customers
     })
   } catch (err) {
@@ -21,7 +26,7 @@ router.get('/', withAdminAuth, async (req, res) => {
 // for creating new payment (POST)
 router.post('/create', withAdminAuth, async (req, res) => {
   try {
-    // create payment record
+    // create payment record // TODO for future: create payment should only be created when payments are actually attributed to an invoice or customer balance, because an over or under payment may result in multiple payments
     const paymentData = await Payment.create(req.body);
 
     // payoff function:           
@@ -95,7 +100,6 @@ router.delete('/delete/:id', withAdminAuth, async (req, res) => {
   try {
 
     // de-associate invoices / customer credit
-    //...
 
     // destroy
     await Payment.destroy({
