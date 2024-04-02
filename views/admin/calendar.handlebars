@@ -1,0 +1,49 @@
+<html>
+<head>
+    <style>
+        .past {
+            background-color: #f0f0f0;
+        }
+        .today {
+            background-color: rgb(255, 255, 125);
+        }
+        .future {
+            background-color: #ffffff;
+        }
+        table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Work Week Calendar</h1>
+    <table>
+        <tr>
+            {{#each weekHeader}}
+                <th>{{this}}</th>
+            {{/each}}
+        </tr>
+        <tr>
+            {{#each weekSchedule}}
+                <td class="{{dayStatus}}">
+                    <ul>
+                        {{#each customers}}
+                            <li><a href="#">{{this.name}}</a></li>
+                        {{/each}}
+                    </ul>
+                </td>
+            {{/each}}
+        </tr>
+    </table>
+</body>
+</html>
