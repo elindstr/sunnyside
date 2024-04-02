@@ -1,0 +1,11 @@
+<h1>My Payments</h1>
+<hr>
+
+<table>
+{{#each payments as |payment|}}
+    <tr>
+        <td>{{format_date payment.date}}</td>
+        <td><a href="/customer/view/payment/{{this.id}}">Make payment</a></td>
+    </tr>
+{{/each}}
+</table>
