@@ -160,20 +160,29 @@ const generatePassword = async (event) => {
 }  
 
 const emailCredentials  = async (user_id) => {
-    console.log(user_id)
+    waitingEffect()
 
     const response = await fetch(`/admin/email/credentials/${user_id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
-        alert('Successfully email user new login credentials.')
-        //window.location.href = `/admin/users`
+        endWaitingEffect()
+        alert('Successfully emailed user new login credentials.')
     }
     else {
+        endWaitingEffect()
         const responseBody = await response.json();
         console.log(responseBody.msg);
         alert("server error")
     }
 
 }
+
+function waitingEffect () {
+    document.getElementById('overlay').style.display = 'block';
+}
+function endWaitingEffect() {
+    // Hide overlay and enable buttons after action is completed
+    document.getElementById('overlay').style.display = 'none';
+  }

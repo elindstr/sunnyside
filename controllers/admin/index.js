@@ -21,6 +21,9 @@ router.use('/products', productRoutes);
 const recordRoutes = require('./recordRoutes');
 router.use('/records', recordRoutes);
 
+const reportRoutes = require('./reportRoutes');
+router.use('/reports', reportRoutes);
+
 const userRoutes = require('./userRoutes');
 router.use('/users', userRoutes);
 

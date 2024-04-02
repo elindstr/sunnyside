@@ -1,5 +1,3 @@
-// This seed file takes about 12 minutes to complete. For a faster seed file, without invoice or payment data, use seed-lite.js. 
-
 const sequelize = require('../config/connection');
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { format_date } = require('../utils/helpers');
@@ -24,8 +22,9 @@ const seedDatabase = async () => {
         returning: true,
       });
     
-    await seedInvoices()
-    await seedPayments()
+
+    //await seedInvoices()
+    //await seedPayments()
 
     process.exit(0)
 }
@@ -450,6 +449,7 @@ async function seedServicesandExpenses() {
             let customer = await Customer.findByPk(c, {
                 raw: true,
             });
+            console.log('452', customer.product_id)
             seedService.push({
                 "date": format_date(serviceDate),
                 "employee_id": Math.floor(Math.random() * 2) + 1,
@@ -468,22 +468,22 @@ async function seedServicesandExpenses() {
         }
         serviceDate.setDate(serviceDate.getDate() + 7);
     }
+}
 
-    async function seedInvoices() {
-        let invoice_start_date = new Date(2023, 0, 1);
-        let invoice_end_date = new Date(2023, 1, 2);
-        let stopLoopDate = new Date(2024, 2, 1);
-        while (invoice_end_date < stopLoopDate) {
-            for (let c = 1; c < seedCustomer.length+1; c++) {
-                await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
-                await Batch.create({
-                    date: format_date(invoice_end_date),
-                    end_date: format_date(invoice_end_date)
-                })
-            }
-            invoice_start_date.setDate(invoice_start_date.getDate() + 30);
-            invoice_end_date.setDate(invoice_end_date.getDate() + 30);
+async function seedInvoices() {
+    let invoice_start_date = new Date(2023, 0, 1);
+    let invoice_end_date = new Date(2023, 1, 2);
+    let stopLoopDate = new Date(2024, 2, 1);
+    while (invoice_end_date < stopLoopDate) {
+        for (let c = 1; c < seedCustomer.length+1; c++) {
+            await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
+            await Batch.create({
+                date: format_date(invoice_end_date),
+                end_date: format_date(invoice_end_date)
+            })
         }
+        invoice_start_date.setDate(invoice_start_date.getDate() + 30);
+        invoice_end_date.setDate(invoice_end_date.getDate() + 30);
     }
 }
 

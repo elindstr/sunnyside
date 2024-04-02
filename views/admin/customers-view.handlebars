@@ -1,45 +1,55 @@
+<div class="header-area">
+    <h1>{{customer.first_name}} {{customer.last_name}} ({{customer.id}})</h1>
+    <a href="/admin/customers/edit/{{customer.id}}" class="btn">Edit</a>
+</div>
 
-<h1>Customer Ledger</h1>
+<section class="info-section">
+    <h2>Contacts</h2>
+    <table>
+      <tr>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Username</th>
+      </tr>
+      <tr>
+        <td>{{customer.address}}</td>
+        <td>{{customer.phone}}</td>
+        <td>{{customer.email}}</td>
+        <td>{{customer.username}}</td>
+      </tr>
+    </table>
+</section>
 
-<table id="customers">
-  <tr>
-    <th>ID</th>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>Address</th>
-    <th>Phone</th>
-    <th>Email</th>
-    <th>Product</th>
-    <th>Schedule</th>
-    <th>Cleaner</th>
-  </tr>
-  <tr>
-    <td>{{customer.id}}</td>
-    <td>{{customer.first_name}}</td>
-    <td>{{customer.last_name}}</td>
-    <td>{{customer.address}}</td>
-    <td>{{customer.phone}}</td>
-    <td>{{customer.email}}</td>
-    <td>{{customer.product.name}}</td>
-    <td>{{customer.schedule}}</td>
-    <td>{{customer.employee.first_name}}</td>
-  </tr>
-</table>
+<section class="info-section">
+    <h2>Service Profile</h2>
+    <table>
+      <tr>
+        <th>Product</th>
+        <th>Schedule</th>
+        <th>Cleaner</th>
+      </tr>
+      <tr>
+        <td>{{customer.product.name}}</td>
+        <td>{{customer.schedule}}</td>
+        <td>{{customer.employee.first_name}}</td>
+      </tr>
+    </table>
+</section>
 
-<hr>
-<table id="history">
-  <tr>
-    <th>Date</th>
-    <th>Type</th>
-    <th>Amount</th>
-    <th>Invoice ID</th>
-  </tr>
-  {{#each allRecords}}
-  <tr>
-    <td>{{format_date this.date}}</td>
-    <td>{{this.type}}</td>
-    <td>{{this.amount}}</td>
-    <td><a href="/admin/invoices/view/{{this.invoice_id}}">{{this.invoice_id}}</a></td>
-  </tr>
-  {{/each}}
-</table>
+<section class="info-section">
+    <h2>Accounting</h2>
+    <p>Credit balance (overpayments): <strong>{{customer.account_balance}}</strong></p>
+    <p>Amount of unpaid invoices: <strong>{{unpaidInvoiceBalance}}</strong></p>
+    <p>Amount of unbilled services and expenses: <strong>{{unbilledTotal}}</strong></p>
+
+    <a href="/admin/records/?dateAfter=2000-01-01&dateBefore=2099-01-01&includeService=service&includeExpense=expense&includeInvoice=invoice&includePayment=payment&filterByCustomer={{customer.id}}" class="btn">Service History / Invoice Ledger</a>
+</section>
+
+<section class="info-section">
+    <h2>Employee Logging</h2>
+    
+    <a href="/admin/customers/new-service/{{customer.id}}" class="btn">Log New Service</a>
+    <a href="/admin/customers/new-expense/{{customer.id}}" class="btn">Log New Expense</a>
+    {{!-- <a href="/admin/customers/new-interaction/{{customer.id}}" class="btn">Log Customer Note</a> --}}
+</section>

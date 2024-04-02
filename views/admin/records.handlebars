@@ -1,22 +1,73 @@
-
 <h1>Records</h1>
+<form id="searchFilters" action="/admin/records/" method="get">
+  <div class="row">
+    <fieldset class="col-md">
+      <legend>Date Range</legend>
+      <label for="dateAfter">Date After: <input type="date" id="dateAfter" name="dateAfter" value="2000-01-01"></label>
+      <label for="dateBefore">Date Before: <input type="date" id="dateBefore" name="dateBefore" value="2099-01-01"></label>
+    </fieldset>
 
+    <fieldset class="col-md">
+      <legend>Include</legend>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="includeService" id="includeService" value="true" checked> Service</label>
+        <label><input type="checkbox" name="includeExpense" id="includeExpense" value="true" checked> Expense</label>
+      </div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="includeInvoice" id="includeInvoice" value="true" checked> Invoice</label>
+        <label><input type="checkbox" name="includePayment" id="includePayment" value="true" checked> Payment</label>
+      </div>
+    </fieldset>
+  </div>
+  <div class="row">
+    <fieldset class="col-md">
+      <legend>Filter</legend>
+      <label for="filterByCustomer">Filter by Customer:
+        <select id="filterByCustomer" name="filterByCustomer">
+          <option value="any">Any</option>
+          {{#each customers}}<option value="{{this.id}}">{{this.first_name}} {{this.last_name}} ({{this.id}})</option>{{/each}}
+        </select>
+      </label>
+    </fieldset>
+    <div class="col-md-auto">
+      <button type="submit" style="margin-top: 32px;">Search</button>
+    </div>
+  </div>
+</form>
+
+<hr>
 <table id="records">
   <tr>
     <th>Date</th>
-    <th>Customer ID</th>
+    <th>Customer</th>
     <th>Type</th>
     <th>Amount</th>
     <th>Invoice ID</th>
   </tr>
-
   {{#each allRecords}}
   <tr>
     <td>{{format_date this.date}}</td>
-    <td>{{this.customer_id}}</td>
+    <td><a href="/admin/customers/view/{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</a></td>
     <td>{{this.type}}</td>
     <td>{{this.amount}}</td>
     <td><a href="/admin/invoices/view/{{this.invoice_id}}">{{this.invoice_id}}</a></td>
   </tr>
   {{/each}}
 </table>
+
+<script>
+  let searchObj = JSON.parse('{{{searchObj}}}');
+  
+  document.getElementById('dateAfter').value = searchObj.dateAfter;
+  document.getElementById('dateBefore').value = searchObj.dateBefore;
+  if (searchObj.filterByCustomer) {
+    document.getElementById('filterByCustomer').value = searchObj.filterByCustomer;
+  }
+  document.getElementById('includeService').checked = searchObj.includeService;
+  document.getElementById('includeExpense').checked = searchObj.includeExpense;
+  document.getElementById('includeInvoice').checked = searchObj.includeInvoice;
+  document.getElementById('includePayment').checked = searchObj.includePayment;
+
+</script>
+</script>
+

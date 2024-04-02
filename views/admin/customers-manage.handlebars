@@ -1,19 +1,14 @@
-
 <h1>Manage Customers</h1>
 
-<a href="/admin/customers/create"><button>+ Create New</button></a>
+<a href="/admin/customers/create" class="btn-create" style="float: right">+ Create New</a>
 
 <table id="customers">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Address</th>
-      <th>Phone</th>
-      <th>Email</th>
+      <th>First</th>
+      <th>Last</th>
       <th>Product</th>
-      <th>Schedule</th>
+      <th>Day</th>
       <th>Cleaner</th>
       <th></th>
     </tr>
@@ -21,18 +16,16 @@
   <tbody>
     {{#each customersObj}}
     <tr>
-      <td><a href="/admin/customers/view/{{this.id}}">{{this.id}}</a></td>
-      <td>{{this.first_name}}</td>
-      <td>{{this.last_name}}</td>
-      <td>{{this.address}}</td>
-      <td>{{this.phone}}</td>
-      <td>{{this.email}}</td>
-      <td>{{this.product.name}}</td>
-      <td>{{this.schedule}}</td>
-      <td>{{this.employee.first_name}}</td>
-      <td><a href="/admin/customers/edit/{{this.id}}"><button>Edit</button></a></td>
-    </tr>
+  <td>{{this.first_name}}</td>
+  <td>{{this.last_name}}</td>
+  <td>{{this.product.name}}</td>
+  <td>{{this.schedule}}</td>
+  <td>{{this.employee.first_name}}</td>
+  <td>
+    <a href="/admin/customers/view/{{this.id}}" class="btn-view">View</a>
+    <a href="/admin/customers/edit/{{this.id}}" class="btn-edit">Edit</a>
+  </td>
+</tr>
     {{/each}}
-
   </tbody>
 </table>

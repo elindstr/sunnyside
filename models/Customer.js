@@ -13,6 +13,9 @@ Customer.init(
       primaryKey: true,
       autoIncrement: true
     },
+    stripe_customer_id: {
+      type: DataTypes.STRING, 
+    },
     first_name: {
       type: DataTypes.STRING, 
       allowNull: false

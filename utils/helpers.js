@@ -13,4 +13,15 @@ const format_date = (date) => {
   return `${year}-${month}-${day}`;
 }
 
-module.exports = { get_today, format_date };
+const calculateDaysBetweenDates = (date1, date2) => {
+  try {
+    date1 = new Date(date1);
+    date2 = new Date(date2);
+  }
+  catch {return null}
+  const differenceInMilliseconds = Math.abs(date2 - date1);
+  const days = differenceInMilliseconds / (24 * 60 * 60 * 1000);
+  return days;
+}
+
+module.exports = { get_today, format_date, calculateDaysBetweenDates };
