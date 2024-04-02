@@ -2,7 +2,7 @@ const get_today = () => {
   const now = new Date();
   const losAngelesDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
   return format_date(losAngelesDate);
-}
+} 
 
 const format_date = (date) => {
   if (!date) return '';
