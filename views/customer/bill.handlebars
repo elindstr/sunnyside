@@ -2,9 +2,9 @@
 
 <div class='invoice-body'>
     <strong>Billed To:</strong><br>
-    ${customer.first_name} ${customer.last_name}<br>
-    ${customer.address}<br>
-    ${customer.email}<br>
+    {{bill.customer.first_name}} {{bill.customer.last_name}}<br>
+    {{bill.customer.address}}<br>
+    {{bill.customer.email}}<br>
 </div>
 
 <div>Total amount due: {{bill.amount}}</div>

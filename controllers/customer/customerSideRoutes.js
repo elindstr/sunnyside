@@ -53,7 +53,7 @@ router.get('/payments', withCustomerAuth, async (req, res) => {
     const customer = req.session.customer_id
     const payments = await Payment.findAll({
       where: {customer_id: customer},
-      raw: true
+      raw: true,
     });
 
     payments.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -70,8 +70,16 @@ router.get('/payments', withCustomerAuth, async (req, res) => {
 
 router.get('/view/payment/:id', withCustomerAuth, async (req, res) => {
   try {
-    const bill = await Payment.findByPk(req.params.id);
-    
+    const bills = await Payment.findByPk(req.params.id, {
+      include: [
+        {
+          model: Customer,
+          attributes: ['first_name', 'last_name', 'address', 'email'],
+        },
+      ],
+    });
+    const bill = bills.get({plain: true});
+    console.log(bill);
     res.render('customer/bill', {
       logged_in: req.session.logged_in,
       bill
