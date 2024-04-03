@@ -344,6 +344,38 @@ const seedCustomer = [
         "employee_id": 2
     }
 ]
+
+const seedUser = [
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "password",
+        "access_level": "admin",
+        "employee_id": 1
+    },
+    {
+        "id": 2,
+        "username": "employee",
+        "password": "password",
+        "access_level": "employee",
+        "employee_id": 2
+    },
+    {
+        "id": 3,
+        "username": "mario",
+        "password": "password",
+        "access_level": "employee",
+        "employee_id": 3
+    },
+    {
+        "id": 4,
+        "username": "customer",
+        "password": "password",
+        "access_level": "customer",
+        "customer_id": 1
+    }
+]
+
 const seedInteraction = [
     {
         "date": "2024-02-01",
@@ -417,7 +449,6 @@ async function seedServicesandExpenses() {
             let customer = await Customer.findByPk(c, {
                 raw: true,
             });
-            console.log('452', customer.product_id)
             seedService.push({
                 "date": format_date(serviceDate),
                 "employee_id": Math.floor(Math.random() * 2) + 1,
@@ -493,32 +524,30 @@ async function seedPayments() {
     }
 
     // Randomly delete a few payments
-const paymentData = await Payment.findAll({
-    order: [['date', 'DESC']],
-    limit: 50,
-    raw: true
-});
+    const paymentData = await Payment.findAll({
+        order: [['date', 'DESC']],
+        limit: 50,
+        raw: true
+    });
 
-// Start from the last index, which is paymentIds.length - 1
-for (let i = paymentData.length - 1; i >= 0; i--) {
-    if (Math.random() < 0.1) {  // 10% missed payments
-        if (paymentData[i]) {
+    // Start from the last index, which is paymentIds.length - 1
+    for (let i = paymentData.length - 1; i >= 0; i--) {
+        if (Math.random() < 0.1) {  // 10% missed payments
+            if (paymentData[i]) {
 
-            // Update invoice
-            await Invoice.update(
-                { amount_paid: 0 },
-                { where: { id: paymentData[i].invoice_id } }
-            );
+                // Update invoice
+                await Invoice.update(
+                    { amount_paid: 0 },
+                    { where: { id: paymentData[i].invoice_id } }
+                );
 
-            // Delete payment
-            await Payment.destroy({
-                where: { id: paymentData[i].id }
-            });
+                // Delete payment
+                await Payment.destroy({
+                    where: { id: paymentData[i].id }
+                });
+            }
         }
     }
-}
-
-
 }
 
 

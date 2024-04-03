@@ -231,7 +231,7 @@ const seedCustomer = [
         "phone": "916-234-5422",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": "M",
+        "schedule": "M", 
         "employee_id": 3
     },
     {
@@ -346,7 +346,6 @@ const seedCustomer = [
     }
 ]
     
-
 const seedUser = [
     {
         "id": 1,
@@ -377,6 +376,7 @@ const seedUser = [
         "customer_id": 1
     }
 ]
+
 const seedInteraction = [
     {
         "date": "2024-02-01",

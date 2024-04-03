@@ -36,7 +36,7 @@ router.get('/', withEmployeeAuth, async (req, res) => {
         let weekHeader = [] // for the names of the week in the table header
         let weekSchedule = [] // for the names on each day
         for (let i = 1; i <= 5; i++) { // Mon (1) through Fri (5)
-            
+
             let day = new Date(monDate) // get actual date for color coding
             day.setDate(monDate.getDate() + i - 1)
             let timeStatus
@@ -47,27 +47,49 @@ router.get('/', withEmployeeAuth, async (req, res) => {
             } else {
                 timeStatus = 'future';
             }
+
+            weekHeader.push(formatHeaderDate(day)) // format header
             
             let dayAlpha = dayToAlpha(i);   // get customers
-            let customers = await Customer.findAll({
+            const customers = await Customer.findAll({
+                include: [{
+                    model: Service,
+                    where: {
+                        date: format_date(day)
+                    },
+                    required: false
+                }],
                 where: {
                     schedule: dayAlpha,
                     employee_id: employee_id
                 },
-                raw: true
+                raw: true,
+                nest: true
             });
+            console.log(format_date(day))
+            console.log(customers)
 
-            weekHeader.push(formatHeaderDate(day)) // format header
+            const services = await Service.findAll({
+                where: {
+                    customer_id: 1,
+                    date: format_date(day)
+                },
+                raw: true,
+                nest: true
+            })
+            console.log(services)
 
-            weekSchedule.push({ // create customer list for each day
+            weekSchedule.push({ // construct customer list for this day
                 dayStatus: timeStatus,
                 customers: customers.map(customer => ({
-                    id: customer.id,    // extra data for generating links / default inputs
+                    id: customer.id,
                     employeeId: customer.employee_id,
-                    name: `${customer.first_name} ${customer.last_name}`
+                    name: `${customer.first_name} ${customer.last_name}`,
+                    isServiced: customer.services.id
                 })),
             });
         }
+        console.log(weekSchedule[0])
 
         // render
         res.render('admin/calendar', {
