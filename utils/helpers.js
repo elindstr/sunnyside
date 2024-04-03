@@ -12,7 +12,7 @@ const format_date = (date) => {
 };
 
 const format_date_to_PST = (date) => {
-  console.log('15:', date)
+  // console.log('15:', date)
   let offset = 7 * 60000;
   date = new Date(date.getTime() + offset);
   const month = String(date.getMonth() + 1).padStart(2, '0');
