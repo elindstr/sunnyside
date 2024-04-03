@@ -16,7 +16,7 @@ function formatHeaderDate(date) {
     return `${dayOfWeek} (${month}/${day})`;
 }
 
-router.get('/', withEmployeeAuth, async (req, res) => {
+router.get('/', withAdminAuth, async (req, res) => {
     try {
         const employee_id = req.session.employee_id  
         const today = new Date();
@@ -76,7 +76,7 @@ router.get('/', withEmployeeAuth, async (req, res) => {
                 }],
                 where: {
                     schedule: dayAlpha,
-                    employee_id: employee_id
+                    //employee_id: employee_id
                 },
                 raw: true,
                 nest: true
@@ -88,18 +88,21 @@ router.get('/', withEmployeeAuth, async (req, res) => {
                 dayStatus: timeStatus,
                 customers: customers.map(customer => ({
                     id: customer.id,
-                    employeeId: customer.employee_id,
+                    employee_id: customer.employee_id,
                     name: `${customer.first_name} ${customer.last_name}`,
                     isServiced: customer.services.id
                 })),
             });
         }
-        console.log(weekSchedule[1])
+        //console.log(weekSchedule[1])
+
+        const employees = await Employee.findAll({raw: true}) 
 
         // render
         res.render('admin/calendar', {
             logged_in: req.session.logged_in,
-            weekHeader, weekSchedule
+            logged_in_as_admin: (req.session.access_level == "admin"),
+            weekHeader, weekSchedule, employees
         })
     } catch (err) {
         console.log(err)

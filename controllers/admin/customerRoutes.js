@@ -475,7 +475,7 @@ router.get('/new-expense/:id', withAdminAuth, async (req, res) => {
 router.post('/new-expense/:id', withAdminAuth, async (req, res) => {
   try {
     let {date, customer_id, employee_id, amount, description} = req.body
-    date = format_date(date)
+    //date = format_date(date)
     amount = amount.replace(/\$/g, '').replace(/,/g, '');
     const status = await Expense.create({
       date, customer_id, employee_id, amount, description

@@ -26,10 +26,24 @@
         .completed {
             text-decoration: line-through;
         }
+        .employee-1 { color: #FF6347; }
+        .employee-2 { color: #4682B4; }
+        .employee-3 { color: #32CD32; }
+        .employee-toggle {
+            line-height: .7 !important;
+            float: right;
+        }
     </style>
 </head>
 <body>
+    <div class="employee-toggle">
+        {{#each employees}}
+            <label class="employee-{{this.id}}"><input type="checkbox" class="employee-toggle" value="{{this.id}}" checked> {{this.first_name}}</label><br>
+        {{/each}}
+    </div>
+
     <h1>Work Week Calendar</h1>
+
     <table>
         <tr>
             {{#each weekHeader}}
@@ -41,12 +55,37 @@
                 <td class="{{dayStatus}}">
                     <ul>
                         {{#each customers}}
-                            <li><a {{#if this.isServiced}}class="completed"{{/if}} href="/admin/customers/view/{{this.id}}">{{this.name}}</a></li>
+                            <li>
+                                <a class="employee-{{this.employee_id}} {{#if this.isServiced}}completed{{/if}}" data-set-employee="{{this.employee_id}}" href="/admin/customers/view/{{this.id}}">
+                                    {{this.name}}
+                                </a>
+                            </li>
                         {{/each}}
                     </ul>
                 </td>
             {{/each}}
         </tr>
     </table>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.employee-toggle').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const employeeId = checkbox.value;
+                const isChecked = checkbox.checked;
+                document.querySelectorAll(`a[data-set-employee="${employeeId}"]`).forEach(link => {
+                    if (isChecked) {
+                        link.parentElement.style.display = ''
+                    } else {
+                        link.parentElement.style.display = 'none'
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+
 </body>
 </html>
+
