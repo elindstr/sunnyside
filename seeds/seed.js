@@ -9,7 +9,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
 const sequelize = require('../config/connection');
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { format_date } = require('../utils/helpers');
@@ -454,7 +453,7 @@ let seedService = []
 let seedExpense = []
 async function seedServicesandExpenses() {
     let customers = await Customer.findAll({ raw: true });
-    let serviceDate = new Date(2023, 0, 2);
+    let serviceDate = new Date(2023, 10, 2);
     let stopDate = new Date(2024, 2, 30);
 
     while (serviceDate < stopDate) {
@@ -482,8 +481,8 @@ async function seedServicesandExpenses() {
 
 
 async function seedInvoices() {
-    let invoice_start_date = new Date(2023, 0, 1);
-    let invoice_end_date = new Date(2023, 1, 2);
+    let invoice_start_date = new Date(2023, 10, 1);
+    let invoice_end_date = new Date(2023, 11, 2);
     let stopLoopDate = new Date(2024, 2, 1);
     while (invoice_end_date < stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
@@ -499,7 +498,7 @@ async function seedInvoices() {
 }
 
 async function seedPayments() {
-    let date = new Date(2023, 0, 20);
+    let date = new Date(2024, 1, 20);
     let stopLoopDate = new Date(2024, 2, 1);
     while (date < stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
