@@ -6,7 +6,7 @@ const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('.
 router.get('/invoices', withCustomerAuth, async (req, res) => {
     try {
   
-      // get general customer data
+      // get the customer id from the session
       const customer = req.session.customer_id;
 
       const invoices = await Invoice.findAll({
@@ -18,6 +18,7 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
         raw: true
       });
 
+      // sort the invoices by date
       invoices.sort((a, b) => new Date(a.date) - new Date(b.date));
 
       //render
@@ -42,9 +43,11 @@ router.get('/view/invoice/:id', withCustomerAuth, async (req, res) => {
         },
       ],
     });
-
+    
+    // seralize the billData
     const bill = billData.get({ plain: true });
 
+    // save the amount due on the bill as hasOutstandingAmount
     bill.hasOutstandingAmount = bill.amount - bill.amount_paid > 0;
 
     res.render('customer/pay-bill', {
@@ -71,6 +74,7 @@ router.get('/payments', withCustomerAuth, async (req, res) => {
       raw: true,
     });
 
+    // sort the payments by date
     payments.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     res.render('customer/payments', {
