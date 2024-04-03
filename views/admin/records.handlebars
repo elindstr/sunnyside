@@ -46,7 +46,7 @@
   </tr>
   {{#each allRecords}}
   <tr>
-    <td>{{format_date_to_PST this.date}}</td>
+    <td>{{format_date_output this.date}}</td>
     <td><a href="/admin/customers/view/{{this.customer_id}}">{{this.first_name}} {{this.last_name}}</a></td>
     <td>{{this.type}}</td>
     <td>{{this.amount}}</td>

@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
 const { Sequelize, Op } = require('sequelize');
-const { format_date, get_today } = require('../../utils/helpers');
+const { format_date, format_date_to_PST, get_today } = require('../../utils/helpers');
 
 // for customer manager
 router.get('/', withAdminAuth, async (req, res) => {
@@ -310,6 +310,8 @@ router.post('/new-service/:id', withAdminAuth, async (req, res) => {
     const status = await Service.create({
       date, customer_id,employee_id, product_id
     })
+    // console.log(date) //saved as input-date 00:00:00
+
     //success; return to customers/view
 
     //rendering view (code copied from above)

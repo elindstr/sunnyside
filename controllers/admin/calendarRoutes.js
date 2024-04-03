@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
-const { format_date, get_today, calculateDaysBetweenDates } = require('../../utils/helpers');
+const { format_date, format_date_to_PST, get_today, calculateDaysBetweenDates } = require('../../utils/helpers');
 const { Sequelize, Op } = require('sequelize');
 
 function dayToAlpha(dayNum) {
@@ -50,12 +50,27 @@ router.get('/', withEmployeeAuth, async (req, res) => {
 
             weekHeader.push(formatHeaderDate(day)) // format header
             
-            let dayAlpha = dayToAlpha(i);   // get customers
+            // get customers and include where they've had services on that day
+            let dayAlpha = dayToAlpha(i);
+            const dayStart = format_date(day);
+            const dayEnd = format_date(day);
+            let adjustedDayStart = new Date(dayStart);  //adjusting sequelize's fucking difficult search query conversion to UTC
+            let adjustedDayEnd = new Date(dayEnd);
+            adjustedDayStart.setHours(adjustedDayStart.getHours() - 7);
+            adjustedDayEnd.setHours(adjustedDayEnd.getHours() - 7);
+            const adjustedStartStr = adjustedDayStart.toISOString().replace('T', ' ').substring(0, 19);
+            const adjustedEndStr = adjustedDayEnd.toISOString().replace('T', ' ').substring(0, 19);
+
+
+            console.log(dayStart, dayEnd)
             const customers = await Customer.findAll({
                 include: [{
                     model: Service,
                     where: {
-                        date: format_date(day)
+                        date: {
+                            [Op.gte]: adjustedStartStr,
+                            [Op.lte]: adjustedEndStr
+                          }
                     },
                     required: false
                 }],
@@ -66,18 +81,8 @@ router.get('/', withEmployeeAuth, async (req, res) => {
                 raw: true,
                 nest: true
             });
-            console.log(format_date(day))
-            console.log(customers)
-
-            const services = await Service.findAll({
-                where: {
-                    customer_id: 1,
-                    date: format_date(day)
-                },
-                raw: true,
-                nest: true
-            })
-            console.log(services)
+            // console.log(format_date(day))
+            // console.log(customers)
 
             weekSchedule.push({ // construct customer list for this day
                 dayStatus: timeStatus,
@@ -89,7 +94,7 @@ router.get('/', withEmployeeAuth, async (req, res) => {
                 })),
             });
         }
-        console.log(weekSchedule[0])
+        console.log(weekSchedule[1])
 
         // render
         res.render('admin/calendar', {
