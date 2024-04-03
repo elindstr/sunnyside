@@ -23,6 +23,9 @@
             text-align: center;
             background-color: #f2f2f2;
         }
+        .completed {
+            text-decoration: line-through;
+        }
     </style>
 </head>
 <body>
@@ -38,7 +41,7 @@
                 <td class="{{dayStatus}}">
                     <ul>
                         {{#each customers}}
-                            <li><a href="#">{{this.name}}</a></li>
+                            <li><a {{#if this.isServiced}}class="completed"{{/if}} href="/admin/customers/view/{{this.id}}">{{this.name}}</a></li>
                         {{/each}}
                     </ul>
                 </td>
