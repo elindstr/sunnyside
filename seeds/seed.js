@@ -1,5 +1,15 @@
 // This seed file takes about 12 minutes to complete. For a faster seed file, without invoice or payment data, use seed-lite.js. 
 
+// implementing sleep function to avoid overwhelming out database 
+    // code: 'ER_USER_LIMIT_REACHED',
+    // errno: 1226,
+    // sqlState: '42000',
+    // sqlMessage: "User 'm884f8txttj9wr85' has exceeded the 'max_questions' resource (current value: 3600)",
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 const sequelize = require('../config/connection');
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { format_date } = require('../utils/helpers');
@@ -443,19 +453,19 @@ const seedInteraction = [
 let seedService = []
 let seedExpense = []
 async function seedServicesandExpenses() {
+    let customers = await Customer.findAll({ raw: true });
     let serviceDate = new Date(2023, 0, 2);
     let stopDate = new Date(2024, 2, 30);
+
     while (serviceDate < stopDate) {
-        for (let c = 1; c < seedCustomer.length+1; c++) {
-            let customer = await Customer.findByPk(c, {
-                raw: true,
-            });
+        for (let customer of customers) {
             seedService.push({
                 "date": format_date(serviceDate),
                 "employee_id": Math.floor(Math.random() * 2) + 1,
-                "customer_id": c,
+                "customer_id": customer.id,
                 "product_id": customer.product_id
-            })
+            });            
+            // Randomly add expenses
             if (Math.random() < .1) {
                 seedExpense.push({
                     "date": format_date(serviceDate),
@@ -463,12 +473,13 @@ async function seedServicesandExpenses() {
                     "customer_id": Math.floor(Math.random() * 8) + 1,
                     "amount": 20.75,
                     "description": "replace filter"
-                })
+                });
             }
         }
         serviceDate.setDate(serviceDate.getDate() + 7);
     }
 }
+
 
 async function seedInvoices() {
     let invoice_start_date = new Date(2023, 0, 1);
@@ -525,32 +536,30 @@ async function seedPayments() {
     }
 
     // Randomly delete a few payments
-const paymentData = await Payment.findAll({
-    order: [['date', 'DESC']],
-    limit: 50,
-    raw: true
-});
+    const paymentData = await Payment.findAll({
+        order: [['date', 'DESC']],
+        limit: 50,
+        raw: true
+    });
 
-// Start from the last index, which is paymentIds.length - 1
-for (let i = paymentData.length - 1; i >= 0; i--) {
-    if (Math.random() < 0.1) {  // 10% missed payments
-        if (paymentData[i]) {
+    // Start from the last index, which is paymentIds.length - 1
+    for (let i = paymentData.length - 1; i >= 0; i--) {
+        if (Math.random() < 0.1) {  // 10% missed payments
+            if (paymentData[i]) {
 
-            // Update invoice
-            await Invoice.update(
-                { amount_paid: 0 },
-                { where: { id: paymentData[i].invoice_id } }
-            );
+                // Update invoice
+                await Invoice.update(
+                    { amount_paid: 0 },
+                    { where: { id: paymentData[i].invoice_id } }
+                );
 
-            // Delete payment
-            await Payment.destroy({
-                where: { id: paymentData[i].id }
-            });
+                // Delete payment
+                await Payment.destroy({
+                    where: { id: paymentData[i].id }
+                });
+            }
         }
     }
-}
-
-
 }
 
 
