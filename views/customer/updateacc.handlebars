@@ -21,43 +21,8 @@
     <td><span>Email</span></td>
     <td><input class="edit-inputs" type="text" id="email" value="{{customer.email}}" /></td>
   </tr>
-  <tr>
-    <td><span>Product</span></td>
-    <td>
-      <select class="edit-inputs" id="product">
-        <option value="">-</option>
-        {{#each products}}
-          <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-      </select>
-    </td>
-  </tr>
-  <tr>
-    <td><span>Schedule</span></td>
-    <td><input class="edit-inputs" type="text" id="schedule" value="{{customer.schedule}}" /></td>
-  </tr>
-  <tr>
-    <td><span>Cleaner</span></td>
-    <td>
-      <select class="edit-inputs" id="cleaner">
-        <option value="">-</option>
-        {{#each employees}}
-          <option value="{{this.id}}">{{this.first_name}}</option>
-        {{/each}}
-      </select>
-    </td>
-  </tr>
 </table>
 <button id="update" onclick="updateCustomer()">Update</button>
-<button id="delete" onclick="deleteCustomer()">Delete</button>
-<a href="/admin/customers"><button id="cancel">Cancel</button></a>
+<a href="/dashboard"><button id="cancel">Cancel</button></a>
 
 <script src="/js/admin-customers.js"></script>
-
-<script>
-  // load drop down selections
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById('product').value = "{{customer.product_id}}";
-    document.getElementById('cleaner').value = "{{customer.employee_id}}";
-  })
-</script>
