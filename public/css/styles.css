@@ -1,6 +1,9 @@
+
 body {
+    font-family: "poppins" ,sans-serif;
     background-image: url('../assets/water.jpg');
     background-size: cover;
     background-position: center;
     background-color: blue;
 }
+
