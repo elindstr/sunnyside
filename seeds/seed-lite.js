@@ -235,8 +235,8 @@ const seedCustomer = [
     },
     {
         "id": 16,
-        "first_name": "FirstName16",
-        "last_name": "LastName16",
+        "first_name": "Ella",
+        "last_name": "Morgan",
         "address": "116 Main Street",
         "phone": "916-116-1016",
         "email": "elindstr@gmail.com",
@@ -246,8 +246,8 @@ const seedCustomer = [
     },
     {
         "id": 17,
-        "first_name": "FirstName17",
-        "last_name": "LastName17",
+        "first_name": "Noah",
+        "last_name": "Bennett",
         "address": "117 Main Street",
         "phone": "916-117-1017",
         "email": "elindstr@gmail.com",
@@ -257,8 +257,8 @@ const seedCustomer = [
     },
     {
         "id": 18,
-        "first_name": "FirstName18",
-        "last_name": "LastName18",
+        "first_name": "Mia",
+        "last_name": "Phillips",
         "address": "118 Main Street",
         "phone": "916-118-1018",
         "email": "elindstr@gmail.com",
@@ -268,8 +268,8 @@ const seedCustomer = [
     },
     {
         "id": 19,
-        "first_name": "FirstName19",
-        "last_name": "LastName19",
+        "first_name": "Lucas",
+        "last_name": "Garcia",
         "address": "119 Main Street",
         "phone": "916-119-1019",
         "email": "elindstr@gmail.com",
@@ -279,8 +279,8 @@ const seedCustomer = [
     },
     {
         "id": 20,
-        "first_name": "FirstName20",
-        "last_name": "LastName20",
+        "first_name": "Amelia",
+        "last_name": "Martinez",
         "address": "120 Main Street",
         "phone": "916-120-1020",
         "email": "elindstr@gmail.com",
@@ -290,8 +290,8 @@ const seedCustomer = [
     },
     {
         "id": 21,
-        "first_name": "FirstName21",
-        "last_name": "LastName21",
+        "first_name": "Oliver",
+        "last_name": "Jackson",
         "address": "121 Main Street",
         "phone": "916-121-1021",
         "email": "elindstr@gmail.com",
@@ -301,8 +301,8 @@ const seedCustomer = [
     },
     {
         "id": 22,
-        "first_name": "FirstName22",
-        "last_name": "LastName22",
+        "first_name": "Sophia",
+        "last_name": "Lopez",
         "address": "122 Main Street",
         "phone": "916-122-1022",
         "email": "elindstr@gmail.com",
@@ -312,8 +312,8 @@ const seedCustomer = [
     },
     {
         "id": 23,
-        "first_name": "FirstName23",
-        "last_name": "LastName23",
+        "first_name": "Ethan",
+        "last_name": "Wilson",
         "address": "123 Main Street",
         "phone": "916-123-1023",
         "email": "elindstr@gmail.com",
@@ -323,8 +323,8 @@ const seedCustomer = [
     },
     {
         "id": 24,
-        "first_name": "FirstName24",
-        "last_name": "LastName24",
+        "first_name": "Ava",
+        "last_name": "Martinez",
         "address": "124 Main Street",
         "phone": "916-124-1024",
         "email": "elindstr@gmail.com",
@@ -334,8 +334,8 @@ const seedCustomer = [
     },
     {
         "id": 25,
-        "first_name": "FirstName25",
-        "last_name": "LastName25",
+        "first_name": "William",
+        "last_name": "Anderson",
         "address": "125 Main Street",
         "phone": "916-125-1025",
         "email": "elindstr@gmail.com",
@@ -344,7 +344,6 @@ const seedCustomer = [
         "employee_id": 2
     }
 ]
-    
 
 const seedUser = [
     {
@@ -376,6 +375,7 @@ const seedUser = [
         "customer_id": 1
     }
 ]
+
 const seedInteraction = [
     {
         "date": "2024-02-01",
@@ -449,7 +449,6 @@ async function seedServicesandExpenses() {
             let customer = await Customer.findByPk(c, {
                 raw: true,
             });
-            console.log('452', customer.product_id)
             seedService.push({
                 "date": format_date(serviceDate),
                 "employee_id": Math.floor(Math.random() * 2) + 1,
@@ -525,32 +524,30 @@ async function seedPayments() {
     }
 
     // Randomly delete a few payments
-const paymentData = await Payment.findAll({
-    order: [['date', 'DESC']],
-    limit: 50,
-    raw: true
-});
+    const paymentData = await Payment.findAll({
+        order: [['date', 'DESC']],
+        limit: 50,
+        raw: true
+    });
 
-// Start from the last index, which is paymentIds.length - 1
-for (let i = paymentData.length - 1; i >= 0; i--) {
-    if (Math.random() < 0.1) {  // 10% missed payments
-        if (paymentData[i]) {
+    // Start from the last index, which is paymentIds.length - 1
+    for (let i = paymentData.length - 1; i >= 0; i--) {
+        if (Math.random() < 0.1) {  // 10% missed payments
+            if (paymentData[i]) {
 
-            // Update invoice
-            await Invoice.update(
-                { amount_paid: 0 },
-                { where: { id: paymentData[i].invoice_id } }
-            );
+                // Update invoice
+                await Invoice.update(
+                    { amount_paid: 0 },
+                    { where: { id: paymentData[i].invoice_id } }
+                );
 
-            // Delete payment
-            await Payment.destroy({
-                where: { id: paymentData[i].id }
-            });
+                // Delete payment
+                await Payment.destroy({
+                    where: { id: paymentData[i].id }
+                });
+            }
         }
     }
-}
-
-
 }
 
 

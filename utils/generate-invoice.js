@@ -2,7 +2,7 @@
 
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { Sequelize, Op } = require('sequelize');
-const { format_date, get_today } = require('../utils/helpers');
+const { format_date, format_date_to_PST, get_today } = require('../utils/helpers');
 const { sendEmail } = require('./email');
 const { getPaymentUrl } = require('./stripe');
 
@@ -149,8 +149,8 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
                 </thead>
                 <tbody>
                     <tr><td colspan="3"><strong>Services:</strong></td></tr>
-                    ${serviceData.map(service => `<tr><td>${format_date(service.date)}</td><td>${service['product.name']}</td><td>$${service['product.rate']}</td></tr>`).join('')}
-                    ${expenseAmount ? `<tr><td colspan="3"><strong>Expenses:</strong></td></tr>${expenseData.map(expense => `<tr><td>${format_date(expense.date)}</td><td>${expense.description}</td><td>$${expense.amount}</td></tr>`).join('')}` : ''}
+                    ${serviceData.map(service => `<tr><td>${format_date_to_PST(service.date)}</td><td>${service['product.name']}</td><td>$${service['product.rate']}</td></tr>`).join('')}
+                    ${expenseAmount ? `<tr><td colspan="3"><strong>Expenses:</strong></td></tr>${expenseData.map(expense => `<tr><td>${format_date_to_PST(expense.date)}</td><td>${expense.description}</td><td>$${expense.amount}</td></tr>`).join('')}` : ''}
                 </tbody>
             </table>
 

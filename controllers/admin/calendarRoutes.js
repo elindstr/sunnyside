@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
-const { format_date, get_today, calculateDaysBetweenDates } = require('../../utils/helpers');
+const { format_date, format_date_to_PST, get_today, calculateDaysBetweenDates } = require('../../utils/helpers');
 const { Sequelize, Op } = require('sequelize');
 
 function dayToAlpha(dayNum) {
@@ -16,7 +16,7 @@ function formatHeaderDate(date) {
     return `${dayOfWeek} (${month}/${day})`;
 }
 
-router.get('/', withEmployeeAuth, async (req, res) => {
+router.get('/', withAdminAuth, async (req, res) => {
     try {
         const employee_id = req.session.employee_id  
         const today = new Date();
@@ -36,7 +36,7 @@ router.get('/', withEmployeeAuth, async (req, res) => {
         let weekHeader = [] // for the names of the week in the table header
         let weekSchedule = [] // for the names on each day
         for (let i = 1; i <= 5; i++) { // Mon (1) through Fri (5)
-            
+
             let day = new Date(monDate) // get actual date for color coding
             day.setDate(monDate.getDate() + i - 1)
             let timeStatus
@@ -47,32 +47,62 @@ router.get('/', withEmployeeAuth, async (req, res) => {
             } else {
                 timeStatus = 'future';
             }
-            
-            let dayAlpha = dayToAlpha(i);   // get customers
-            let customers = await Customer.findAll({
-                where: {
-                    schedule: dayAlpha,
-                    employee_id: employee_id
-                },
-                raw: true
-            });
 
             weekHeader.push(formatHeaderDate(day)) // format header
+            
+            // get customers and include where they've had services on that day
+            let dayAlpha = dayToAlpha(i);
+            const dayStart = format_date(day);
+            const dayEnd = format_date(day);
+            let adjustedDayStart = new Date(dayStart);  //adjusting sequelize's fucking difficult search query conversion to UTC
+            let adjustedDayEnd = new Date(dayEnd);
+            adjustedDayStart.setHours(adjustedDayStart.getHours() - 7);
+            adjustedDayEnd.setHours(adjustedDayEnd.getHours() - 7);
+            const adjustedStartStr = adjustedDayStart.toISOString().replace('T', ' ').substring(0, 19);
+            const adjustedEndStr = adjustedDayEnd.toISOString().replace('T', ' ').substring(0, 19);
 
-            weekSchedule.push({ // create customer list for each day
+
+            console.log(dayStart, dayEnd)
+            const customers = await Customer.findAll({
+                include: [{
+                    model: Service,
+                    where: {
+                        date: {
+                            [Op.gte]: adjustedStartStr,
+                            [Op.lte]: adjustedEndStr
+                          }
+                    },
+                    required: false
+                }],
+                where: {
+                    schedule: dayAlpha,
+                    //employee_id: employee_id
+                },
+                raw: true,
+                nest: true
+            });
+            // console.log(format_date(day))
+            // console.log(customers)
+
+            weekSchedule.push({ // construct customer list for this day
                 dayStatus: timeStatus,
                 customers: customers.map(customer => ({
-                    id: customer.id,    // extra data for generating links / default inputs
-                    employeeId: customer.employee_id,
-                    name: `${customer.first_name} ${customer.last_name}`
+                    id: customer.id,
+                    employee_id: customer.employee_id,
+                    name: `${customer.first_name} ${customer.last_name}`,
+                    isServiced: customer.services.id
                 })),
             });
         }
+        //console.log(weekSchedule[1])
+
+        const employees = await Employee.findAll({raw: true}) 
 
         // render
         res.render('admin/calendar', {
             logged_in: req.session.logged_in,
-            weekHeader, weekSchedule
+            logged_in_as_admin: (req.session.access_level == "admin"),
+            weekHeader, weekSchedule, employees
         })
     } catch (err) {
         console.log(err)
