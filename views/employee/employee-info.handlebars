@@ -1,8 +1,4 @@
-<h1>Sunnyside Pools</h1>
-<br>    
-<h2>Welcome {{userData.first_name}}</h2>
-<div>
-    <h3>My Information</h3>
+<h1>My Information</h1>
     <table id="employees">
         <thead>
         <tr>
@@ -10,20 +6,15 @@
             <th>Last Name</th>
             <th>Email</th>
             <th>Role</th>
-            <th>Available Days</th>
         </tr>
         </thead>
         <tbody>
-            <!-- data inserted here -->
-            {{#each employees}}
         <tr>
-            <td>{{this.first_name}}</td>
-            <td>{{this.last_name}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.role}}</td>
-            <td>{{this.available_days}}</td>
+            <td>{{employee.first_name}}</td>
+            <td>{{employee.last_name}}</td>
+            <td>{{employee.email}}</td>
+            <td>{{employee.role}}</td>
         </tr>
-        {{/each}}
         </tbody>
     </table>
 </div>
