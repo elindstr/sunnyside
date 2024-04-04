@@ -9,39 +9,48 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/styles.css">
 
+ {{!-- link for the google font poppins --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     {{#if logged_in_as_admin}}
     <link rel="stylesheet" href="/css/admin-styles.css">
+    {{/if}}
+
+    {{#if logged_in_as_customer}}
+    <link rel="stylesheet" href="/css/customer-view.css">
     {{/if}}
 
 </head>
 
 <body class="d-flex flex-column h-100">
-
-    <header>
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008080;">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="/assets/logo.png" class="card-img-top" alt="sunnyside-logo" style="max-height: 70px;">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">User Dashboard</a>
-                    </li>
-                    {{#if logged_in}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Sign Out</a>
-                    </li>
-                    {{else}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Log In</a>
-                    </li>
-                    {{/if}}
-                </ul>
+    <header> 
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008080 ;"> <!-- Inline style for teal color -->
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <img src="/assets/logo.png" class="card-img-top mx-auto d-block" alt="Image for Box 1"  width="100px" height="70px" style="float: left;">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto" >
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">User Dashboard</a>
+                        </li>
+                        {{#if logged_in}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Sign Out</a>
+                        </li>
+                        {{else}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Log In</a>
+                        </li>
+                        {{/if}}
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -92,13 +101,13 @@
 
             {{#if logged_in_as_customer}}
                 {{!-- customer nav goes here --}}
-                    
-                <div class="mb-2">
-                    <a href="/customer/invoices">View my invoices.</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/customer/payments">View my payments.</a>
-                </div>
+
+            <div class="d-grid gap-2 col-6 mx-auto">
+               <a href="/customer/invoices" class="btn btn-primary btn-block">View my invoices</a>
+               <br>
+               <a href="/customer/updateacc" class="btn btn-primary btn-block">Update Account</a>
+            </div>
+
 
             {{/if}}
             </div>
