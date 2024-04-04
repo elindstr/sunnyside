@@ -3,7 +3,7 @@ const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Ser
 const { withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth } = require('../../utils/auth');
 const { sendEmail } = require('../../utils/email');
 var generator = require('generate-password');
-
+const bcrypt = require('bcrypt');
 
 // email user credentials
 router.post('/credentials/:id', withAdminAuth, async (req, res) => {
@@ -24,42 +24,42 @@ router.post('/credentials/:id', withAdminAuth, async (req, res) => {
       user.email = employee.email
     }
 
-    // get new password and update user
-    const newPassword = generator.generate({
-      length: 8,
-      numbers: true,
-      excludeSimilarCharacters: true
-    });
-    await User.update({
-      password: newPassword
-    }, {
-      where: { id: user_id }
-    });
+    // find user, generate new password, and update user
+    const userObj = await User.findByPk(user_id);
+    if (userObj) {
+      const newPassword = generator.generate({
+        length: 8,
+        numbers: true,
+        excludeSimilarCharacters: true
+      });
+      userObj.password = newPassword;
+      await userObj.save(); // trigger beforeUpdate hook
 
-    // prepare email object
-    const emailObject = {
-      from: 'Sunnyside Pools <sunnyside.sacramento@gmail.com>',
-      to: user.email,
-      subject: 'Sunnyside User Login',
-      text: `Hi ${user.first_name}! Here are new login credentials to your Sunnyside online dashboard <https://sunnyside-699326087e54.herokuapp.com/>:\n
-      \t username: ${user.username}\n
-      \t password: ${newPassword}\n
-      \n\n
-      Sunnyside Pools`,
-      html: `<p>Hi ${user.first_name}! Here are new login credentials to your Sunnyside <a href="https://sunnyside-699326087e54.herokuapp.com/">online dashboard</a>:</p>
-      <ul>
-          <li>username: ${user.username}</li>
-          <li>password: ${newPassword}</li>
-      </ul><br>
+      // prepare email object
+      const emailObject = {
+        from: 'Sunnyside Pools <sunnyside.sacramento@gmail.com>',
+        to: user.email,
+        subject: 'Sunnyside User Login',
+        text: `Hi ${user.first_name}! Here are new login credentials to your Sunnyside online dashboard <https://sunnyside-699326087e54.herokuapp.com/>:\n
+        \t username: ${user.username}\n
+        \t password: ${newPassword}\n
+        \n\n
+        Sunnyside Pools`,
+        html: `<p>Hi ${user.first_name}! Here are new login credentials to your Sunnyside <a href="https://sunnyside-699326087e54.herokuapp.com/">online dashboard</a>:</p>
+        <ul>
+            <li>username: ${user.username}</li>
+            <li>password: ${newPassword}</li>
+        </ul><br>
+        
+        <img src='https://sunnyside-699326087e54.herokuapp.com/assets/logo.png' width='190px' alt='Sunnyside Pools'>
+        `,
+      }
       
-      <img src='https://sunnyside-699326087e54.herokuapp.com/assets/logo.png' width='190px' alt='Sunnyside Pools'>
-      `,
-    }
-    
-    // send email
-    const info = await sendEmail(emailObject)
+      // send email
+      const info = await sendEmail(emailObject)
 
-    res.status(200).json({message: 'success'});
+      res.status(200).json({message: 'success'});
+    }
   } catch (err) {
     console.log(err)
     res.status(500).json({message: err});
