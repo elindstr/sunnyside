@@ -10,5 +10,5 @@
 <div>Total amount due: {{bill.amount}}</div>
 {{!-- if the bill is unpaid render the link to stripe to pay it --}}
 {{#if bill.hasOutstandingAmount}}
-<div><a href={{bill.invoice.stripe_payment_url}}>Make a payment</a></div>
+<div><a href={{bill.stripe_payment_url}}>Make a payment</a></div>
 {{/if}}
