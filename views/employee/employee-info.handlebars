@@ -3,11 +3,22 @@
 <h2>Welcome {{userData.first_name}}</h2>
 <div>
     <h3>My Information</h3>
-    <p>Employee ID: {{userData.employee_id}}</p>
-    <p>First Name: {{userData.first_name}}</p>
-    <p>Last Name: {{userData.last_name}}</p>
-    <p>Email: {{userData.email}}</p>
-    <p>Phone: {{userData.phone}}</p>
-    <p>Role: {{userData.role}}</p>
-    <p>Location: {{userData.location}}</p>
+    <table>
+        <tr>
+            <th>Employee ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Available Days</th>
+        </tr>
+        <tr>
+            <td>{{userData.employee_id}}</td>
+            <td>{{userData.first_name}}</td>
+            <td>{{userData.last_name}}</td>
+            <td>{{userData.email}}</td>
+            <td>{{userData.role}}</td>
+            <td>{{userData.available_days}}</td>
+        </tr>
+    </table>
 </div>
