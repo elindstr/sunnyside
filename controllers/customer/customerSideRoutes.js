@@ -113,12 +113,13 @@ router.get('/view/payment/:id', withCustomerAuth, async (req, res) => {
   }
 });
 
-router.get('/update', withCustomerAuth, async (req, res) => {
+router.get('/update/:id', withCustomerAuth, async (req, res) => {
   try {
     const customerData = await Customer.findOne({
       where: { id: req.session.customer_id}
     })
     const customer = customerData.get({ plain: true });
+    console.log(customer);
     
     res.render('customer/updateacc', {
       logged_in: req.session.logged_in,
@@ -129,5 +130,17 @@ router.get('/update', withCustomerAuth, async (req, res) => {
     res.status(500).json({message: err});
   }
 })
+
+router.put('/edit/:id', withCustomerAuth, async (req, res) => {
+  try {
+    const customerData = await Customer.update(req.body, {
+      where: { id: req.params.id }
+    });
+    res.status(200).json(customerData);
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
 
 module.exports = router;

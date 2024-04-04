@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="/css/customer-view.css">
     {{/if}}
 
+    {{#if logged_in_as_employee}}
+    <link rel="stylesheet" href="/css/employee-view.css">
+    {{/if}}
+
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -116,14 +120,15 @@
             {{#if logged_in_as_customer}}
                 {{!-- customer nav goes here --}}
                     
-         <div class="mb-2">
-                    <a href="/customer/invoices">View my invoices.</a>
+                <div class="mb-2">
+                    <a href="/customer/invoices" class="btn btn-primary btn-block">View my invoices.</a>
+
                 </div>
                 <div class="mb-2">
-                    <a href="/customer/payments">View my payments.</a>
+                    <a href="/customer/payments" class="btn btn-primary btn-block">View my payments.</a>
                 </div>
                 <div class="mb-2">
-                    <a href="/customer/update">Update account.</a>
+                    <a href="/customer/update/:{{userData.id}}" class="btn btn-primary btn-block">Update account.</a>
                 </div>
 
 
@@ -149,4 +154,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
-</html>
+</ht
