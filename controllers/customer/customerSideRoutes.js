@@ -62,7 +62,7 @@ router.get('/view/invoice/:id', withCustomerAuth, async (req, res) => {
 
 router.get('/payments', withCustomerAuth, async (req, res) => {
   try {
-    const customer = req.session.customer_id
+    const customer = req.session.customer_id;
     const payments = await Payment.findAll({
       include: [
         {
@@ -112,5 +112,22 @@ router.get('/view/payment/:id', withCustomerAuth, async (req, res) => {
     res.status(500).json({message: err});
   }
 });
+
+router.get('/update', withCustomerAuth, async (req, res) => {
+  try {
+    const customerData = await Customer.findOne({
+      where: { id: req.session.customer_id}
+    })
+    const customer = customerData.get({ plain: true });
+    
+    res.render('customer/updateacc', {
+      logged_in: req.session.logged_in,
+      customer
+    })
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({message: err});
+  }
+})
 
 module.exports = router;

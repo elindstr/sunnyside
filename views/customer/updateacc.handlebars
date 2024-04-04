@@ -1,10 +1,10 @@
-<h1>{{customer}} Information</h1>
+<h1>{{customer.first_name}}'s Information</h1>
 
 <!-- input for email -->
 <div class="row g-2">
       <div class="col-md">
         <div class="form-floating">
-          <input type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com" value="mdo@example.com">
+          <input type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com" value="{{customer.email}}">
           <label for="floatingInputGrid">Email address</label>
         </div>
       </div>
