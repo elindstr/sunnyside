@@ -139,7 +139,7 @@ const seedCustomer = [
         "phone": "916-666-6666",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": "F",
+        "schedule": "R",
         "employee_id": 2,
     },
     {
