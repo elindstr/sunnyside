@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
 const { Sequelize, Op } = require('sequelize');
-const { format_date, get_today } = require('../../utils/helpers');
+const { format_date, format_date_to_PST, get_today } = require('../../utils/helpers');
 
 // for customer manager
 router.get('/', withAdminAuth, async (req, res) => {
@@ -306,12 +306,13 @@ router.get('/new-service/:id', withAdminAuth, async (req, res) => {
 // Log New Service (with customer id) (receiving POST)
 router.post('/new-service/:id', withAdminAuth, async (req, res) => { 
   try {
-    const {date, customer_id, employee_id, product_id} = req.body
+    let {date, customer_id, employee_id, product_id} = req.body
     const status = await Service.create({
       date, customer_id,employee_id, product_id
     })
-    //success; return to customers/view
+    // console.log(date) //saved as input-date 00:00:00
 
+    //success; return to customers/view
 
     //rendering view (code copied from above)
     // get general customer data
@@ -474,6 +475,7 @@ router.get('/new-expense/:id', withAdminAuth, async (req, res) => {
 router.post('/new-expense/:id', withAdminAuth, async (req, res) => {
   try {
     let {date, customer_id, employee_id, amount, description} = req.body
+    //date = format_date(date)
     amount = amount.replace(/\$/g, '').replace(/,/g, '');
     const status = await Expense.create({
       date, customer_id, employee_id, amount, description
