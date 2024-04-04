@@ -12,4 +12,6 @@ The project is deployed on Heroku at https://sunnyside-699326087e54.herokuapp.co
 
 ## Screenshots
 
-...
+<img src="/screenshots/localhost_3001_admin_calendars.png" width="350px">
+<img src="/screenshots/localhost_3001_admin_records__dateAfter=2023-11-01&dateBefore=2099-01-01&includeInvoice=true&includePayment=true&filterByCustomer=4.png" width="350px">
+<img src="/screenshots/localhost_3001_admin_invoices_view_54.png" width="350px">
