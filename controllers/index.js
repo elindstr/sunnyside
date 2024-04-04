@@ -12,4 +12,7 @@ router.use('/admin', adminRoutes);
 const customerSideRoutes = require('./customer');
 router.use('/customer', customerSideRoutes);
 
+const employeeSideRoutes = require('./employee');
+router.use('/employee', employeeSideRoutes);    
+
 module.exports = router;

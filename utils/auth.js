@@ -3,7 +3,7 @@ const withAuth = (req, res, next) => {
     req.session.redirectTo = req.originalUrl //store the url they are seeking
     res.redirect('/login');
   } else {
-    next();
+    next();//if they are logged in, continue with the request
   }
 };
 
@@ -13,7 +13,7 @@ const withAdminAuth = (req, res, next) => {
     req.session.redirectTo = req.originalUrl;
     res.redirect('/login');
   } else {
-    next()
+    next()//if they are logged in as an admin, continue with the request
   }
 };
 
@@ -22,7 +22,7 @@ const withEmployeeAuth = (req, res, next) => {
     req.session.redirectTo = req.originalUrl;
     res.redirect('/login');
   } else {
-    next()
+    next()//if they are logged in as an employee, continue with the request
   }
 };
 
@@ -31,7 +31,7 @@ const withCustomerAuth = (req, res, next) => {
     req.session.redirectTo = req.originalUrl;
     res.redirect('/login');
   } else {
-    next()
+    next()//if they are logged in as a customer, continue with the request
   }
 };
 
