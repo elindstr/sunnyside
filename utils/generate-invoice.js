@@ -200,7 +200,8 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
 
                 <p>We accept online payments <a href='${stripe_payment_url}'>here</a>.</p>
 
-                <p>Sunnyside Pools</p>`
+                <img src='https://sunnyside-699326087e54.herokuapp.com/assets/logo.png' width='190px' alt='Sunnyside Pools'>
+                `
             }
             await sendEmail(emailObject)
         }
