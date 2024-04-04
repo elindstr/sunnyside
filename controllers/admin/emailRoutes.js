@@ -52,7 +52,8 @@ router.post('/credentials/:id', withAdminAuth, async (req, res) => {
           <li>password: ${newPassword}</li>
       </ul><br>
       
-      <img src='https://sunnyside-699326087e54.herokuapp.com/assets/logo.png' width='190px' alt='Sunnyside Pools'>`,
+      <img src='https://sunnyside-699326087e54.herokuapp.com/assets/logo.png' width='190px' alt='Sunnyside Pools'>
+      `,
     }
     
     // send email
