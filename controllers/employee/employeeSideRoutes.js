@@ -45,9 +45,35 @@ router.get('/employee-info', withEmployeeAuth, async (req, res) => {
         }
     });
 
+    //route for employee log new note
 
+    router.get ('/log-new-note', withEmployeeAuth, async (req, res) => {
+        console.log ("test")
+        try {
+            res.render('employee/employee-log-new-note', {
+                logged_in: req.session.logged_in,
+                logged_in_as_employee: (req.session.access_level == "employee"),
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({message: err});
+        }
+    });
 
+    //route for employee update password
 
+    router.get ('/update', withEmployeeAuth, async (req, res) => {
+        console.log ("test")
+        try {
+            res.render('employee/employee-update-password', {
+                logged_in: req.session.logged_in,
+                logged_in_as_employee: (req.session.access_level == "employee"),
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({message: err});
+        }
+    });
 
 
 
