@@ -1,0 +1,78 @@
+<html>
+<head>
+    <style>
+        .past {
+            background-color: #f0f0f0;
+        }
+        .today {
+            background-color: rgb(255, 255, 125);
+        }
+        .future {
+            background-color: #ffffff;
+        }
+        table {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+<h1>My Work Week</h2>
+
+    <table>
+        <tr>
+            {{#each weekHeader}}
+                <th>{{this}}</th>
+            {{/each}}
+        </tr>
+        <tr>
+            {{#each weekSchedule}}
+                <td class="{{dayStatus}}">
+                    <ul>
+                        {{#each customers}}
+                            <li>
+                                <a class="employee-{{this.employee_id}} {{#if this.isServiced}}completed{{/if}}" data-set-employee="{{this.employee_id}}" href="/admin/customers/view/{{this.id}}">
+                                    {{this.name}}
+                                </a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </td>
+            {{/each}}
+        </tr>
+    </table>
+    
+<!-- Not required for employee landing page logic 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.employee-toggle').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const employeeId = checkbox.value;
+                const isChecked = checkbox.checked;
+                document.querySelectorAll(`a[data-set-employee="${employeeId}"]`).forEach(link => {
+                    if (isChecked) {
+                        link.parentElement.style.display = ''
+                    } else {
+                        link.parentElement.style.display = 'none'
+                    }
+                });
+            });
+        });
+    });
+</script>
+-->
+</body>
+</html>
+

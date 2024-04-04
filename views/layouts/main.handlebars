@@ -23,6 +23,7 @@
     {{/if}}
 
     {{#if logged_in_as_employee}}
+    <link rel="stylesheet" href="/css/admin-styles.css">
     <link rel="stylesheet" href="/css/employee-view.css">
     {{/if}}
 
@@ -100,6 +101,9 @@
             {{#if logged_in_as_employee}}
                 {{!-- employee navigation --}}
                     <div class="mb-2">
+                    <a href="/employee/calendar" class="btn btn-primary btn-block">My Calendar</a>
+                     </div>
+                    <div class="mb-2">
                     <a href="/employee/employee-info" class="btn btn-primary btn-block">My Information</a>
                      </div>
                     <div class="mb-2">
@@ -110,9 +114,6 @@
                     </div>
                     <div class="mb-2">
                     <a href="/employee/log-new-expense" class="btn btn-primary btn-block">Log New Expense</a>
-                    </div>
-                    <div class="mb-2">
-                    <a href="/employee/log-new-note" class="btn btn-primary btn-block">Log New Note</a>
                     </div>
             {{/if}}
 

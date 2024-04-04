@@ -3,6 +3,7 @@ const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Ser
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
 const { format_date, format_date_to_PST, get_today, calculateDaysBetweenDates } = require('../../utils/helpers');
 const { Sequelize, Op } = require('sequelize');
+const moment = require('moment-timezone');
 
 function dayToAlpha(dayNum) {
     const days = { 1: 'M', 2: 'T', 3: 'W', 4: 'R', 5: 'F' };
@@ -50,6 +51,14 @@ router.get('/', withAdminAuth, async (req, res) => {
 
             weekHeader.push(formatHeaderDate(day)) // format header
             
+            // // get customers and include where they've had services on that day using Moment TZ
+            // let dayAlpha = dayToAlpha(i);
+            // const timezone = 'America/Los_Angeles';
+            // const dayStart = moment.tz(day, timezone).startOf('day');
+            // const dayEnd = moment.tz(day, timezone).endOf('day');
+            // const adjustedStartStr = dayStart.format('YYYY-MM-DD HH:mm:ss');
+            // const adjustedEndStr = dayEnd.format('YYYY-MM-DD HH:mm:ss');
+
             // get customers and include where they've had services on that day
             let dayAlpha = dayToAlpha(i);
             const dayStart = format_date(day);
@@ -60,7 +69,6 @@ router.get('/', withAdminAuth, async (req, res) => {
             adjustedDayEnd.setHours(adjustedDayEnd.getHours() - 7);
             const adjustedStartStr = adjustedDayStart.toISOString().replace('T', ' ').substring(0, 19);
             const adjustedEndStr = adjustedDayEnd.toISOString().replace('T', ' ').substring(0, 19);
-
 
             console.log(dayStart, dayEnd)
             const customers = await Customer.findAll({
@@ -94,7 +102,7 @@ router.get('/', withAdminAuth, async (req, res) => {
                 })),
             });
         }
-        //console.log(weekSchedule[1])
+        console.log(weekSchedule[0])
 
         const employees = await Employee.findAll({raw: true}) 
 
