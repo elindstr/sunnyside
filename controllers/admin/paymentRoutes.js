@@ -28,6 +28,7 @@ router.post('/create', withAdminAuth, async (req, res) => {
   try {
     // create payment record // TODO for future: create payment should only be created when payments are actually attributed to an invoice or customer balance, because an over or under payment may result in multiple payments
     const paymentData = await Payment.create(req.body);
+    const customer_id = paymentData.customer_id
 
     // payoff function:           
     let allPaid = false
@@ -38,8 +39,9 @@ router.post('/create', withAdminAuth, async (req, res) => {
       let oldestUnpaidInvoice = await Invoice.findAll({
         where: {
             amount: {
-                [Sequelize.Op.gt]: Sequelize.col('amount_paid')
-            }
+                [Sequelize.Op.gt]: Sequelize.col('amount_paid') 
+            },
+            customer_id: customer_id
         },
         order: [['date', 'ASC']],
         limit: 1,

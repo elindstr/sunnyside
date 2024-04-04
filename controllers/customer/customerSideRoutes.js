@@ -24,6 +24,7 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
       //render
       res.render('customer/invoices', {
         logged_in: req.session.logged_in,
+        logged_in_as_customer: (req.session.access_level == "customer"),
         invoices,
         customer
       })
@@ -52,6 +53,7 @@ router.get('/view/invoice/:id', withCustomerAuth, async (req, res) => {
 
     res.render('customer/pay-bill', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       bill,
     });
   } catch (err) {
@@ -79,6 +81,7 @@ router.get('/payments', withCustomerAuth, async (req, res) => {
 
     res.render('customer/payments', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       payments
     })
   } catch (err) {
@@ -105,6 +108,7 @@ router.get('/view/payment/:id', withCustomerAuth, async (req, res) => {
 
     res.render('customer/bill', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       bill
     });
   } catch (err) {
@@ -123,6 +127,7 @@ router.get('/update/:id', withCustomerAuth, async (req, res) => {
     
     res.render('customer/updateacc', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       customer
     })
   } catch (err) {
