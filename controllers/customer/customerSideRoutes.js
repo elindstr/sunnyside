@@ -148,4 +148,15 @@ router.put('/edit/:id', withCustomerAuth, async (req, res) => {
   }
 });
 
+// view invoice by id
+router.get('/view/:id', withCustomerAuth, async (req, res) => {
+  try {
+    const invoiceData = await Invoice.findByPk(req.params.id)
+    res.send(invoiceData.content)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
+
 module.exports = router;

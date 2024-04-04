@@ -1,14 +1,18 @@
-<h1>Bill for {{format_date bill.date}}</h1>
+<h1>Invoice No. {{bill.id}}</h1>
 
-<div class='invoice-body'>
-    <strong>Billed To:</strong><br>
-    {{bill.customer.first_name}} {{bill.customer.last_name}}<br>
-    {{bill.customer.address}}<br>
-    {{bill.customer.email}}<br>
-</div>
+    <a href="/customer/view/{{bill.id}}">View</a><br><br>
 
-<div>Total amount due: {{bill.amount}}</div>
+    <p><strong>Billed To:</strong><br>
+    &nbsp;&nbsp;&nbsp; {{bill.customer.first_name}} {{bill.customer.last_name}}<br>
+    &nbsp;&nbsp;&nbsp; {{bill.customer.address}}<br>
+    &nbsp;&nbsp;&nbsp; {{bill.customer.email}}</p>
+
+    <p>Invoice Date: {{format_date bill.date}}<br>
+    For services through: {{format_date bill.end_date}}<br>
+    Invoiced amount: {{bill.amount}}<br>
+    Amount paid: {{bill.amount_paid}}</p>
+
 {{!-- if the bill is unpaid render the link to stripe to pay it --}}
 {{#if bill.hasOutstandingAmount}}
-<div><a href={{bill.stripe_payment_url}}>Make a payment</a></div>
+    <p><a href={{bill.stripe_payment_url}}>Make a payment</a></p>
 {{/if}}
