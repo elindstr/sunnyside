@@ -22,13 +22,17 @@
     <link rel="stylesheet" href="/css/customer-view.css">
     {{/if}}
 
+    {{#if logged_in_as_employee}}
+    <link rel="stylesheet" href="/css/employee-view.css">
+    {{/if}}
+
 </head>
 
 <body class="d-flex flex-column h-100">
     <header> 
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008080 ;"> <!-- Inline style for teal color -->
             <div class="container">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/">
                     <img src="/assets/logo.png" class="card-img-top mx-auto d-block" alt="Image for Box 1"  width="100px" height="70px" style="float: left;">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -117,13 +121,14 @@
                 {{!-- customer nav goes here --}}
                     
                 <div class="mb-2">
-                    <a href="/customer/invoices">View my invoices.</a>
+                    <a href="/customer/invoices" class="btn btn-primary btn-block">View my invoices.</a>
+
                 </div>
                 <div class="mb-2">
-                    <a href="/customer/payments">View my payments.</a>
+                    <a href="/customer/payments" class="btn btn-primary btn-block">View my payments.</a>
                 </div>
                 <div class="mb-2">
-                    <a href="/customer/update">Update account.</a>
+                    <a href="/customer/update/:{{userData.id}}" class="btn btn-primary btn-block">Update account.</a>
                 </div>
 
 
@@ -149,4 +154,4 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
-</html>
+</ht

@@ -17,12 +17,13 @@ body {
 
 h1 {
     color: #333;
-    font-size: 30px;
     margin: 0;
+    font-weight: 600;
 }
 
 h2 {
-    font-size: 22px;
+    padding-top: 80px;
+    font-size: 25px;
     margin: 10px 0;
 }
 

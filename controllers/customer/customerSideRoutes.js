@@ -24,6 +24,7 @@ router.get('/invoices', withCustomerAuth, async (req, res) => {
       //render
       res.render('customer/invoices', {
         logged_in: req.session.logged_in,
+        logged_in_as_customer: (req.session.access_level == "customer"),
         invoices,
         customer
       })
@@ -52,6 +53,7 @@ router.get('/view/invoice/:id', withCustomerAuth, async (req, res) => {
 
     res.render('customer/pay-bill', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       bill,
     });
   } catch (err) {
@@ -79,6 +81,7 @@ router.get('/payments', withCustomerAuth, async (req, res) => {
 
     res.render('customer/payments', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       payments
     })
   } catch (err) {
@@ -105,6 +108,7 @@ router.get('/view/payment/:id', withCustomerAuth, async (req, res) => {
 
     res.render('customer/bill', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       bill
     });
   } catch (err) {
@@ -113,15 +117,17 @@ router.get('/view/payment/:id', withCustomerAuth, async (req, res) => {
   }
 });
 
-router.get('/update', withCustomerAuth, async (req, res) => {
+router.get('/update/:id', withCustomerAuth, async (req, res) => {
   try {
     const customerData = await Customer.findOne({
       where: { id: req.session.customer_id}
     })
     const customer = customerData.get({ plain: true });
+    console.log(customer);
     
     res.render('customer/updateacc', {
       logged_in: req.session.logged_in,
+      logged_in_as_customer: (req.session.access_level == "customer"),
       customer
     })
   } catch (err) {
@@ -129,5 +135,17 @@ router.get('/update', withCustomerAuth, async (req, res) => {
     res.status(500).json({message: err});
   }
 })
+
+router.put('/edit/:id', withCustomerAuth, async (req, res) => {
+  try {
+    const customerData = await Customer.update(req.body, {
+      where: { id: req.params.id }
+    });
+    res.status(200).json(customerData);
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({message: err});
+  }
+});
 
 module.exports = router;

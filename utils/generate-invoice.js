@@ -191,14 +191,14 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
                 subject: 'Sunnyside Invoice',
                 text: `Hi ${customerData.first_name}! You have a new invoice. You may login to your online dashboard <https://sunnyside-699326087e54.herokuapp.com/> to view it.\n
                 
-                We accept online payments here: ${stripe_payment_url}\n\n
+                We accept online payments here: ${stripe_payment_url}.\n\n
 
                 Sunnyside Pools`,
                 html: `<p>Hi ${customerData.first_name}!</p> 
                 
                 <p>You have a new invoice from Sunnyside Pools. Please login to your <a href="https://sunnyside-699326087e54.herokuapp.com/">online dashboard</a> to view it.</p>
 
-                <p>We accept online payments <a href='${stripe_payment_url}'>here</a></p>
+                <p>We accept online payments <a href='${stripe_payment_url}'>here</a>.</p>
 
                 <p>Sunnyside Pools</p>`
             }
