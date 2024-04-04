@@ -462,7 +462,7 @@ router.get('/new-expense/:id', withAdminAuth, async (req, res) => {
     
     res.render('admin/log-expense', {
       logged_in: req.session.logged_in,
-      logged_in_as_admin: (req.session.access_level == "admin"),
+      logged_in_as_admin: (req.session.access_level == "admin" || req.session.access_level == "employee"),
       customer, customers, employees, today
     })
   } catch (err) {

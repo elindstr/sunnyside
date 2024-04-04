@@ -94,8 +94,25 @@
             {{/if}}
 
             {{#if logged_in_as_employee}}
-                {{!-- employee nav goes here --}}
-
+                {{!-- employee navigation --}}
+                <div class="container-fluid flex-grow-1"></div>
+                <div class="row">
+                 <div class="col-md-3 col-lg-3 bg-white p-3 mr-4 ml-4">
+                    <div class="mb-2">
+                    <a href="/employee/employee-info" class="btn btn-primary btn-block">My Information</a>
+                     </div>
+                    <div class="mb-2">
+                    <a href="/employee/update" class="btn btn-primary btn-block">Update My Password</a>
+                    </div>
+                    <div class="mb-2">
+                    <a href="/employee/log-new-service" class="btn btn-primary btn-block">Log New Service</a>
+                    </div>
+                    <div class="mb-2">
+                    <a href="/employee/log-new-expense" class="btn btn-primary btn-block">Log New Expense</a>
+                    </div>
+                    <div class="mb-2">
+                    <a href="/employee/log-new-note" class="btn btn-primary btn-block">Log New Note</a>
+                    </div>
             {{/if}}
 
 
