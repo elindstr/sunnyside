@@ -1,5 +1,14 @@
 // This seed file takes about 12 minutes to complete. For a faster seed file, without invoice or payment data, use seed-lite.js. 
 
+// implementing sleep function to avoid overwhelming out database 
+    // code: 'ER_USER_LIMIT_REACHED',
+    // errno: 1226,
+    // sqlState: '42000',
+    // sqlMessage: "User 'm884f8txttj9wr85' has exceeded the 'max_questions' resource (current value: 3600)",
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const sequelize = require('../config/connection');
 const { Batch, Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../models');
 const { format_date } = require('../utils/helpers');
@@ -231,13 +240,13 @@ const seedCustomer = [
         "phone": "916-234-5422",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": "M",
+        "schedule": "M", 
         "employee_id": 3
     },
     {
         "id": 16,
-        "first_name": "FirstName16",
-        "last_name": "LastName16",
+        "first_name": "Ella",
+        "last_name": "Morgan",
         "address": "116 Main Street",
         "phone": "916-116-1016",
         "email": "elindstr@gmail.com",
@@ -247,8 +256,8 @@ const seedCustomer = [
     },
     {
         "id": 17,
-        "first_name": "FirstName17",
-        "last_name": "LastName17",
+        "first_name": "Noah",
+        "last_name": "Bennett",
         "address": "117 Main Street",
         "phone": "916-117-1017",
         "email": "elindstr@gmail.com",
@@ -258,8 +267,8 @@ const seedCustomer = [
     },
     {
         "id": 18,
-        "first_name": "FirstName18",
-        "last_name": "LastName18",
+        "first_name": "Mia",
+        "last_name": "Phillips",
         "address": "118 Main Street",
         "phone": "916-118-1018",
         "email": "elindstr@gmail.com",
@@ -269,8 +278,8 @@ const seedCustomer = [
     },
     {
         "id": 19,
-        "first_name": "FirstName19",
-        "last_name": "LastName19",
+        "first_name": "Lucas",
+        "last_name": "Garcia",
         "address": "119 Main Street",
         "phone": "916-119-1019",
         "email": "elindstr@gmail.com",
@@ -280,8 +289,8 @@ const seedCustomer = [
     },
     {
         "id": 20,
-        "first_name": "FirstName20",
-        "last_name": "LastName20",
+        "first_name": "Amelia",
+        "last_name": "Martinez",
         "address": "120 Main Street",
         "phone": "916-120-1020",
         "email": "elindstr@gmail.com",
@@ -291,8 +300,8 @@ const seedCustomer = [
     },
     {
         "id": 21,
-        "first_name": "FirstName21",
-        "last_name": "LastName21",
+        "first_name": "Oliver",
+        "last_name": "Jackson",
         "address": "121 Main Street",
         "phone": "916-121-1021",
         "email": "elindstr@gmail.com",
@@ -302,8 +311,8 @@ const seedCustomer = [
     },
     {
         "id": 22,
-        "first_name": "FirstName22",
-        "last_name": "LastName22",
+        "first_name": "Sophia",
+        "last_name": "Lopez",
         "address": "122 Main Street",
         "phone": "916-122-1022",
         "email": "elindstr@gmail.com",
@@ -313,8 +322,8 @@ const seedCustomer = [
     },
     {
         "id": 23,
-        "first_name": "FirstName23",
-        "last_name": "LastName23",
+        "first_name": "Ethan",
+        "last_name": "Wilson",
         "address": "123 Main Street",
         "phone": "916-123-1023",
         "email": "elindstr@gmail.com",
@@ -324,8 +333,8 @@ const seedCustomer = [
     },
     {
         "id": 24,
-        "first_name": "FirstName24",
-        "last_name": "LastName24",
+        "first_name": "Ava",
+        "last_name": "Martinez",
         "address": "124 Main Street",
         "phone": "916-124-1024",
         "email": "elindstr@gmail.com",
@@ -335,8 +344,8 @@ const seedCustomer = [
     },
     {
         "id": 25,
-        "first_name": "FirstName25",
-        "last_name": "LastName25",
+        "first_name": "William",
+        "last_name": "Anderson",
         "address": "125 Main Street",
         "phone": "916-125-1025",
         "email": "elindstr@gmail.com",
@@ -346,7 +355,6 @@ const seedCustomer = [
     }
 ]
     
-
 const seedUser = [
     {
         "id": 1,
@@ -377,6 +385,7 @@ const seedUser = [
         "customer_id": 1
     }
 ]
+
 const seedInteraction = [
     {
         "date": "2024-02-01",
@@ -443,19 +452,19 @@ const seedInteraction = [
 let seedService = []
 let seedExpense = []
 async function seedServicesandExpenses() {
-    let serviceDate = new Date(2023, 0, 2);
+    let customers = await Customer.findAll({ raw: true });
+    let serviceDate = new Date(2023, 10, 2);
     let stopDate = new Date(2024, 2, 30);
+
     while (serviceDate < stopDate) {
-        for (let c = 1; c < seedCustomer.length+1; c++) {
-            let customer = await Customer.findByPk(c, {
-                raw: true,
-            });
+        for (let customer of customers) {
             seedService.push({
                 "date": format_date(serviceDate),
                 "employee_id": Math.floor(Math.random() * 2) + 1,
-                "customer_id": c,
+                "customer_id": customer.id,
                 "product_id": customer.product_id
-            })
+            });            
+            // Randomly add expenses
             if (Math.random() < .1) {
                 seedExpense.push({
                     "date": format_date(serviceDate),
@@ -463,16 +472,17 @@ async function seedServicesandExpenses() {
                     "customer_id": Math.floor(Math.random() * 8) + 1,
                     "amount": 20.75,
                     "description": "replace filter"
-                })
+                });
             }
         }
         serviceDate.setDate(serviceDate.getDate() + 7);
     }
 }
 
+
 async function seedInvoices() {
-    let invoice_start_date = new Date(2023, 0, 1);
-    let invoice_end_date = new Date(2023, 1, 2);
+    let invoice_start_date = new Date(2023, 10, 1);
+    let invoice_end_date = new Date(2023, 11, 2);
     let stopLoopDate = new Date(2024, 2, 1);
     while (invoice_end_date < stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
@@ -488,7 +498,7 @@ async function seedInvoices() {
 }
 
 async function seedPayments() {
-    let date = new Date(2023, 0, 20);
+    let date = new Date(2024, 1, 20);
     let stopLoopDate = new Date(2024, 2, 1);
     while (date < stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
@@ -525,32 +535,30 @@ async function seedPayments() {
     }
 
     // Randomly delete a few payments
-const paymentData = await Payment.findAll({
-    order: [['date', 'DESC']],
-    limit: 50,
-    raw: true
-});
+    const paymentData = await Payment.findAll({
+        order: [['date', 'DESC']],
+        limit: 50,
+        raw: true
+    });
 
-// Start from the last index, which is paymentIds.length - 1
-for (let i = paymentData.length - 1; i >= 0; i--) {
-    if (Math.random() < 0.1) {  // 10% missed payments
-        if (paymentData[i]) {
+    // Start from the last index, which is paymentIds.length - 1
+    for (let i = paymentData.length - 1; i >= 0; i--) {
+        if (Math.random() < 0.1) {  // 10% missed payments
+            if (paymentData[i]) {
 
-            // Update invoice
-            await Invoice.update(
-                { amount_paid: 0 },
-                { where: { id: paymentData[i].invoice_id } }
-            );
+                // Update invoice
+                await Invoice.update(
+                    { amount_paid: 0 },
+                    { where: { id: paymentData[i].invoice_id } }
+                );
 
-            // Delete payment
-            await Payment.destroy({
-                where: { id: paymentData[i].id }
-            });
+                // Delete payment
+                await Payment.destroy({
+                    where: { id: paymentData[i].id }
+                });
+            }
         }
     }
-}
-
-
 }
 
 

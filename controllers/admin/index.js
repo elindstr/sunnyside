@@ -1,5 +1,8 @@
 const router = require('express').Router();
 
+const calendarRoutes = require('./calendarRoutes');
+router.use('/calendars', calendarRoutes);
+
 const customerRoutes = require('./customerRoutes');
 router.use('/customers', customerRoutes);
 
