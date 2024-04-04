@@ -123,7 +123,7 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
         <body>
         <div class='invoice-container'>
             <div class='invoice-header'>
-                <h1>Sunnyside Pools</h1>
+                <img src='https://sunnyside-699326087e54.herokuapp.com/assets/logo.png' width='200px' alt='Sunnyside Pools'><br>
                 Invoice No. ${invoiceData.id}<br>
                 Date: ${date}
             </div>
