@@ -1,7 +1,7 @@
 const router = require('express').Router();// Path: controllers/employee/employeeSideRoutes.js
 const { Customer, Employee, Expense, Interaction, Invoice, Payment, Product, Service, User } = require('../../models');
 const {withAuth, withAdminAuth, withEmployeeAuth, withCustomerAuth} = require('../../utils/auth');
-const Sequelize = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 
 // Route for employee info
 router.get('/employee-info', withEmployeeAuth, async (req, res) => {
@@ -19,7 +19,6 @@ router.get('/employee-info', withEmployeeAuth, async (req, res) => {
     //route for employee log new expense
 
     router.get ('/log-new-expense', withEmployeeAuth, async (req, res) => {
-        console.log ("test")
         try {
             res.render('employee/employee-log-new-expense', {
                 logged_in: req.session.logged_in,
@@ -74,7 +73,6 @@ router.get('/employee-info', withEmployeeAuth, async (req, res) => {
             res.status(500).json({message: err});
         }
     });
-
 
 
     module.exports = router;
