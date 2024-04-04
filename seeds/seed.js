@@ -465,7 +465,7 @@ async function seedServicesandExpenses() {
                 "product_id": customer.product_id
             });            
             // Randomly add expenses
-            if (Math.random() < .1) {
+            if (Math.random() < .05) {
                 seedExpense.push({
                     "date": format_date(serviceDate),
                     "employee_id": Math.floor(Math.random() * 2) + 1,
@@ -479,12 +479,11 @@ async function seedServicesandExpenses() {
     }
 }
 
-
 async function seedInvoices() {
     let invoice_start_date = new Date(2023, 10, 1);
     let invoice_end_date = new Date(2023, 11, 2);
-    let stopLoopDate = new Date(2024, 2, 1);
-    while (invoice_end_date < stopLoopDate) {
+    let stopLoopDate = new Date(2024, 4, 1);
+    while (invoice_end_date <= stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
             await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")
             await Batch.create({
@@ -499,8 +498,8 @@ async function seedInvoices() {
 
 async function seedPayments() {
     let date = new Date(2024, 1, 20);
-    let stopLoopDate = new Date(2024, 2, 1);
-    while (date < stopLoopDate) {
+    let stopLoopDate = new Date(2024, 3, 20);
+    while (date <= stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
 
             // look up most recent invoice
