@@ -1,13 +1,30 @@
-<h1>[employee/homepage.handlebars:] Employee Homepage</h1>
+<h1>Sunnyside Employee Homepage</h1>
+<br>    
 <h2>Welcome {{userData.first_name}}</h2>
-
-<p>(render links to employee tools in an aside)</p>
-<pre>
-EL Ideas:
-    -view their own service schedule
-    -log cleaning service: enter service information
-    -log expense: enter expense information    
-    -log customer_interaction note
-</pre>
+<br>
+<div>
+<h3>Schedule</h3>
+<table style="width:auto" border="1px">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <!--first and last name of the customer assigned to this employee-->
+            <th>Address</th>
+            <!--Address of the customer, use the customer address value-->
+            <th>Service</th>
+            <!-- Product Name: Full or Chem Only -->
+             <th>Day</th>
+            <!-- Product Name: Full or Chem Only -->
+        </tr>
+    </thead>
+    <tbody>
+        <td>John Smith</td>
+        <td>123 Lane</td>
+        <td>Full Service</td>
+        <td>Monday</td>
+        <!-- Add table rows here -->
+    </tbody>
+</table>
+</div>
 
 
