@@ -497,8 +497,8 @@ async function seedInvoices() {
 }
 
 async function seedPayments() {
-    let date = new Date(2024, 1, 20);
-    let stopLoopDate = new Date(2024, 3, 20);
+    let date = new Date(2023, 11, 20);
+    let stopLoopDate = new Date(2024, 2, 20);
     while (date <= stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
 
