@@ -40,10 +40,16 @@ router.get('/create', withAdminAuth, async (req, res) => {
   try {
     const employees = await Employee.findAll({
       order: [['last_name', 'ASC']],
+      where: {
+        is_deleted: false
+      },
       raw: true
     });
     const customers = await Customer.findAll({
       order: [['last_name', 'ASC']],
+      where: {
+        is_deleted: false
+      },
       raw: true
     });
     res.render('admin/users-create', {
