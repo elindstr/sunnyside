@@ -182,6 +182,7 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
     })
 
     // get Stripe payment url
+    // const stripe_payment_url = ""
     const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
 
     if (type != "seed") {  // skip on seeding to prevent gmail limits
