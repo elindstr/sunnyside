@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <link rel='icon' href='data:,'>
     <meta charset="UTF-8">
@@ -9,30 +8,33 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/styles.css">
 
- {{!-- link for the google font poppins --}}
+    <!-- Add Google Font link -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
+    <!-- Check user roles and include relevant stylesheets -->
     {{#if logged_in_as_admin}}
     <link rel="stylesheet" href="/css/admin-styles.css">
     {{/if}}
-
     {{#if logged_in_as_customer}}
     <link rel="stylesheet" href="/css/customer-view.css">
     {{/if}}
-
     {{#if logged_in_as_employee}}
     <link rel="stylesheet" href="/css/admin-styles.css">
     <link rel="stylesheet" href="/css/employee-view.css">
     {{/if}}
-
 </head>
-
 <body class="d-flex flex-column h-100">
-    <header> 
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008080 ;"> <!-- Inline style for teal color -->
+    <!-- Header Section -->
+    <header>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #008080;">
             <div class="container">
+                <!-- Button to open side navigation -->
+                {{#if logged_in}}
+                <button id="openNav" class="btn btn-primary rounded-pill" style="background-color: #008080;">Menu</button>
+                {{/if}}
                 <a class="navbar-brand" href="/">
                     <img src="/assets/logo.png" class="card-img-top mx-auto d-block" alt="Image for Box 1"  width="100px" height="70px" style="float: left;">
                 </a>
@@ -41,7 +43,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto" >
+                    <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="/dashboard">User Dashboard</a>
                         </li>
@@ -60,100 +62,54 @@
         </nav>
     </header>
 
+    <!-- Side Navigation -->
+    <div id="mySidenav" class="sidenav">
+        <!-- Add links based on user role -->
+        {{#if logged_in_as_admin}}
+            <a href="/admin/calendars">Schedule</a>
+            <a href="/admin/customers">Customers</a>
+            <a href="/admin/employees">Employees</a>
+            <a href="/admin/users">Users</a>
+            <a href="/admin/products">Products</a>
+            <a href="/admin/invoices">Invoices</a>
+            <a href="/admin/payments">Payments</a>
+            <a href="/admin/records">Records</a>
+            <a href="/admin/reports/ar">Accounting</a>
+        {{/if}}
+        {{#if logged_in_as_employee}}
+            <a href="/employee/employee-info">My Information</a>
+            <a href="/employee/update">Update My Password</a>
+            <a href="/employee/log-new-service">Log New Service</a>
+            <a href="/employee/log-new-expense">Log New Expense</a>
+            <a href="/employee/log-new-note">Log New Note</a>
+        {{/if}}
+        {{#if logged_in_as_customer}}
+            <a href="/customer/invoices">View Invoices</a>
+            <a href="/customer/payments">View Payments</a>
+            <a href="/customer/update/{{userData.id}}">Update Account</a>
+        {{/if}}
+    </div>
 
-    <div class="container-fluid flex-grow-1"> <!-- Container to hold the main content -->
-        <div class="row">
-            {{#if logged_in}}
-            <div class="col-md-3 col-lg-3 bg-white p-3 mr-4 ml-4"> <!-- Left column with white background, padding, and left/right margin -->
-
-                {{#if logged_in_as_admin}}
-                <div class="mb-2">
-                    <a href="/admin/calendars" class="btn btn-primary btn-block">Schedule</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/customers" class="btn btn-primary btn-block">Customers</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/employees" class="btn btn-primary btn-block">Employees</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/users" class="btn btn-primary btn-block">Users</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/products" class="btn btn-primary btn-block">Products</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/invoices" class="btn btn-primary btn-block">Invoices</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/payments" class="btn btn-primary btn-block">Payments</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/records" class="btn btn-primary btn-block">Records</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/admin/reports/ar" class="btn btn-primary btn-block">Accounting</a>
-                </div>
-            
-            {{/if}}
-
-            {{#if logged_in_as_employee}}
-                {{!-- employee navigation --}}
-                    <div class="mb-2">
-                    <a href="/employee/calendar" class="btn btn-primary btn-block">My Calendar</a>
-                     </div>
-                    <div class="mb-2">
-                    <a href="/employee/employee-info" class="btn btn-primary btn-block">My Information</a>
-                     </div>
-                    <div class="mb-2">
-                    <a href="/employee/update" class="btn btn-primary btn-block">Update My Password</a>
-                    </div>
-                    <div class="mb-2">
-                    <a href="/employee/log-new-service" class="btn btn-primary btn-block">Log New Service</a>
-                    </div>
-                    <div class="mb-2">
-                    <a href="/employee/log-new-expense" class="btn btn-primary btn-block">Log New Expense</a>
-                    </div>
-
-            {{/if}}
-
-
-            {{#if logged_in_as_customer}}
-                {{!-- customer nav goes here --}}
-                    
-                <div class="mb-2">
-                    <a href="/customer/invoices" class="btn btn-primary btn-block">View Invoices</a>
-
-                </div>
-                <div class="mb-2">
-                    <a href="/customer/payments" class="btn btn-primary btn-block">View Payments</a>
-                </div>
-                <div class="mb-2">
-                    <a href="/customer/update/:{{userData.id}}" class="btn btn-primary btn-block">Update Account</a>
-                </div>
-
-
-            {{/if}}
-            </div>
-            {{/if}}
-
-            <div class="col-md-8 col-lg-8 bg-white p-3 {{#unless logged_in}}mx-auto{{/unless}}">
-                <main> <!-- Box with the handlebars body -->
-                    {{{ body }}}
-                </main>
-            </div>
+    <!-- Content Section -->
+    <div class="container-fluid flex-grow-1">
+        <div class=" bg-white p-3 mx-auto">
+            <main>
+                {{{ body }}}
+            </main>
         </div>
     </div>
 
-    <footer class="footer py-3" style="background-color: #008080; color: white;"> <!-- Inline style for teal background and white text -->
+    <!-- Footer Section -->
+    <footer class="footer py-3" style="background-color: #008080; color: white;">
         <div class="container text-center">
             <span>&copy; 2024 Sunnyside. All rights reserved.</span>
         </div>
     </footer>
 
+    <!-- JavaScript Section -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/js/sidenav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 </body>
-
-</ht
+</html>
