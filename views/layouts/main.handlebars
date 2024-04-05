@@ -64,31 +64,32 @@
 
     <!-- Side Navigation -->
     <div id="mySidenav" class="sidenav">
-        <!-- Add links based on user role -->
-        {{#if logged_in_as_admin}}
-            <a href="/admin/calendars">Schedule</a>
-            <a href="/admin/customers">Customers</a>
-            <a href="/admin/employees">Employees</a>
-            <a href="/admin/users">Users</a>
-            <a href="/admin/products">Products</a>
-            <a href="/admin/invoices">Invoices</a>
-            <a href="/admin/payments">Payments</a>
-            <a href="/admin/records">Records</a>
-            <a href="/admin/reports/ar">Accounting</a>
-        {{/if}}
-        {{#if logged_in_as_employee}}
-            <a href="/employee/employee-info">My Information</a>
-            <a href="/employee/update">Update My Password</a>
-            <a href="/employee/log-new-service">Log New Service</a>
-            <a href="/employee/log-new-expense">Log New Expense</a>
-            <a href="/employee/log-new-note">Log New Note</a>
-        {{/if}}
-        {{#if logged_in_as_customer}}
-            <a href="/customer/invoices">View Invoices</a>
-            <a href="/customer/payments">View Payments</a>
-            <a href="/customer/update/{{userData.id}}">Update Account</a>
-        {{/if}}
-    </div>
+    <a href="javascript:void(0)" class="closebtn" id="closeNav">&times;</a>
+    <!-- Add links based on user role -->
+    {{#if logged_in_as_admin}}
+        <a href="/admin/calendars">Schedule</a>
+        <a href="/admin/customers">Customers</a>
+        <a href="/admin/employees">Employees</a>
+        <a href="/admin/users">Users</a>
+        <a href="/admin/products">Products</a>
+        <a href="/admin/invoices">Invoices</a>
+        <a href="/admin/payments">Payments</a>
+        <a href="/admin/records">Records</a>
+        <a href="/admin/reports/ar">Accounting</a>
+    {{/if}}
+    {{#if logged_in_as_employee}}
+        <a href="/employee/employee-info">My Information</a>
+        <a href="/employee/update">Update My Password</a>
+        <a href="/employee/log-new-service">Log New Service</a>
+        <a href="/employee/log-new-expense">Log New Expense</a>
+        <a href="/employee/log-new-note">Log New Note</a>
+    {{/if}}
+    {{#if logged_in_as_customer}}
+        <a href="/customer/invoices">View Invoices</a>
+        <a href="/customer/payments">View Payments</a>
+        <a href="/customer/update/{{userData.id}}">Update Account</a>
+    {{/if}}
+</div>
 
     <!-- Content Section -->
     <div class="container-fluid flex-grow-1">
