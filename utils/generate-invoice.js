@@ -57,9 +57,12 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
     })
 
     // calculate amounts
-    const serviceAmount = serviceData.reduce((total, item) => total + parseFloat(item['product.rate']), 0);
-    const expenseAmount = expenseData.reduce((total, item) => total + parseFloat(item.amount), 0);
-    const totalAmount = (serviceAmount + expenseAmount)
+    let serviceAmount = serviceData.reduce((total, item) => total + parseFloat(item['product.rate']), 0);
+    let expenseAmount = expenseData.reduce((total, item) => total + parseFloat(item.amount), 0);
+    let totalAmount = (serviceAmount + expenseAmount)
+    serviceAmount = serviceAmount.toFixed(2)
+    expenseAmount = expenseAmount.toFixed(2)
+    totalAmount = totalAmount.toFixed(2)
 
     // early return on no content
     if (serviceData.length == 0 && expenseData.length == 0) {
@@ -179,6 +182,7 @@ const generate = async (customer_id, date, start_date, end_date, type) => {
     })
 
     // get Stripe payment url
+    // const stripe_payment_url = ""
     const stripe_payment_url = await getPaymentUrl(newInvoiceObject, customerData, invoiceData.id)
 
     if (type != "seed") {  // skip on seeding to prevent gmail limits

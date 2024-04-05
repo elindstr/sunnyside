@@ -202,7 +202,12 @@ router.get('/view/:id', withAdminAuth, async (req, res) => {
 router.get('/create', withAdminAuth, async (req, res) => {
   try {
     const products = await Product.findAll({raw: true});
-    const employees = await Employee.findAll({raw: true});
+    const employees = await Employee.findAll({
+      where: {
+        is_deleted: false
+      },
+      raw: true
+    });
 
     res.render('admin/customers-create', {
       logged_in: req.session.logged_in,
@@ -234,7 +239,12 @@ router.get('/edit/:id', withAdminAuth, async (req, res) => {
       raw: true
     });
     const products = await Product.findAll({raw: true});
-    const employees = await Employee.findAll({raw: true});
+    const employees = await Employee.findAll({
+      where: {
+        is_deleted: false
+      },
+      raw: true
+    });
 
     res.render('admin/customers-edit', {
       logged_in: req.session.logged_in,
@@ -287,8 +297,18 @@ router.get('/new-service/:id', withAdminAuth, async (req, res) => {
       include: [{ model: Product }, { model: Employee }],
       raw: true
     });
-    const customers = await Customer.findAll({order: [['last_name', 'ASC']], raw: true});
-    const employees = await Employee.findAll({order: [['last_name', 'ASC']], raw: true});
+    const customers = await Customer.findAll({
+      order: [['last_name', 'ASC']], 
+      where: {
+        is_deleted: false
+      },
+      raw: true});
+    const employees = await Employee.findAll({
+      order: [['last_name', 'ASC']], 
+      where: {
+        is_deleted: false
+      },
+      raw: true});
     const products = await Product.findAll({raw: true});
     const today = get_today()
     

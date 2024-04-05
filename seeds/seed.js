@@ -17,16 +17,14 @@ const { Sequelize, Op } = require('sequelize');
 
 const seedDatabase = async () => {
     await sequelize.sync({ force: true });
-    const product = await Product.bulkCreate(seedProduct);
-    
-    const employee = await Employee.bulkCreate(seedEmployee);
-    const customer = await Customer.bulkCreate(seedCustomer);
-    
-    await seedServicesandExpenses()
-    const service = await Service.bulkCreate(seedService);
-    const expense = await Expense.bulkCreate(seedExpense);
+    await Product.bulkCreate(seedProduct);
+    await Employee.bulkCreate(seedEmployee);
+    await Customer.bulkCreate(seedCustomer);
 
-    const interaction = await Interaction.bulkCreate(seedInteraction);
+    await createServicesandExpensesData()
+    await Service.bulkCreate(seedService);
+    await Expense.bulkCreate(seedExpense);
+    await Interaction.bulkCreate(seedInteraction);
     
     const user = await User.bulkCreate(seedUser, {
         individualHooks: true,
@@ -141,7 +139,7 @@ const seedCustomer = [
         "phone": "916-666-6666",
         "email": "elindstr@gmail.com",
         "product_id": 1,
-        "schedule": "F",
+        "schedule": "R",
         "employee_id": 2,
     },
     {
@@ -450,8 +448,106 @@ const seedInteraction = [
 ]
 
 let seedService = []
+seedService.push(
+    {
+        "date": '2024-04-01',
+        "employee_id": 1,
+        "customer_id": 1,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-01',
+        "employee_id": 1,
+        "customer_id": 15,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-01',
+        "employee_id": 1,
+        "customer_id": 20,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-01',
+        "employee_id": 1,
+        "customer_id": 25,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-02',
+        "employee_id": 1,
+        "customer_id": 2,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-02',
+        "employee_id": 1,
+        "customer_id": 11,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-02',
+        "employee_id": 1,
+        "customer_id": 12,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-02',
+        "employee_id": 1,
+        "customer_id": 16,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-02',
+        "employee_id": 1,
+        "customer_id": 21,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 3,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 4,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 5,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 10,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 13,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 17,
+        "product_id": 1
+    },
+    {
+        "date": '2024-04-03',
+        "employee_id": 1,
+        "customer_id": 22,
+        "product_id": 1
+    }
+)
 let seedExpense = []
-async function seedServicesandExpenses() {
+async function createServicesandExpensesData() {
     let customers = await Customer.findAll({ raw: true });
     let serviceDate = new Date(2023, 10, 2);
     let stopDate = new Date(2024, 2, 30);
@@ -482,7 +578,7 @@ async function seedServicesandExpenses() {
 async function seedInvoices() {
     let invoice_start_date = new Date(2023, 10, 1);
     let invoice_end_date = new Date(2023, 11, 2);
-    let stopLoopDate = new Date(2024, 4, 1);
+    let stopLoopDate = new Date(2024, 3, 1);
     while (invoice_end_date <= stopLoopDate) {
         for (let c = 1; c < seedCustomer.length+1; c++) {
             await generate(c, format_date(invoice_end_date), format_date(invoice_start_date), format_date(invoice_end_date), type="seed")

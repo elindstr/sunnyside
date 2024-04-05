@@ -15,6 +15,7 @@ el_sandbox/
 package-lock.json
 keys.json
 *.pem
+.vscode/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
