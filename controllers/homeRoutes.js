@@ -54,8 +54,10 @@ router.get('/dashboard', withAuth, async (req, res) => {
       res.status(500).json({message: err});
     } 
   }
-  
+
   else if (req.session.access_level == "customer") {
+    const customer_id = req.session.customer_id
+    
     userData = await Customer.findByPk(req.session.customer_id);
     userData = userData.get({ plain: true })
     res.render('customer/homepage', {
@@ -63,7 +65,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
       logged_in_as_admin: (req.session.access_level == "admin"),
       logged_in_as_employee: (req.session.access_level == "employee"),
       logged_in_as_customer: (req.session.access_level == "customer"),
-      userData
+      userData, customer_id
     });  
   }
 })
