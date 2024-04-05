@@ -78,16 +78,16 @@
         <a href="/admin/reports/ar">Accounting</a>
     {{/if}}
     {{#if logged_in_as_employee}}
+        <a href="/employee/calendar">My Calendar</a>
         <a href="/employee/employee-info">My Information</a>
         <a href="/employee/update">Update My Password</a>
         <a href="/employee/log-new-service">Log New Service</a>
         <a href="/employee/log-new-expense">Log New Expense</a>
-        <a href="/employee/log-new-note">Log New Note</a>
     {{/if}}
     {{#if logged_in_as_customer}}
         <a href="/customer/invoices">View Invoices</a>
         <a href="/customer/payments">View Payments</a>
-        <a href="/customer/update/{{userData.id}}">Update Account</a>
+        <a href="/customer/update/{{customer_id}}">Update Account</a>
     {{/if}}
 </div>
 
