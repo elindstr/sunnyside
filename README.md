@@ -15,3 +15,10 @@ The project is deployed on Heroku at https://sunnyside-699326087e54.herokuapp.co
 <img src="/screenshots/localhost_3001_admin_calendars.png" width="350px">
 <img src="/screenshots/localhost_3001_admin_records__dateAfter=2023-11-01&dateBefore=2099-01-01&includeInvoice=true&includePayment=true&filterByCustomer=4.png" width="350px">
 <img src="/screenshots/localhost_3001_admin_invoices_view_54.png" width="350px">
+
+## Dev Deployment
+
+To access the development project with seeded data, we invite you to test the application with these login credentials:
+- admin: password
+- employee: password
+- customer: password
